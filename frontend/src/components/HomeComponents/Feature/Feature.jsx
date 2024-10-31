@@ -1,4 +1,4 @@
-import { Navigation, A11y, Autoplay } from "swiper/modules";
+import { A11y, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
@@ -11,14 +11,13 @@ export default function Feature() {
     <section className="py-10">
       <div className="container">
         <div>
-          <h2 className="font-semibold mb-3 text-4xl text-primary text-center">
+          <h2>
             The Future of Beauty
           </h2>
           <Swiper
-            modules={[Navigation, A11y, Autoplay]}
+            modules={[ A11y, Autoplay]}
             spaceBetween={50}
             slidesPerView={1}
-            navigation
             loop={true}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             breakpoints={{

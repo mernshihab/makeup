@@ -3,13 +3,14 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../Layout/MainLayout";
 import Home from "../pages/Home/Home";
 import Spinner from "../components/Spinner/Spinner";
-
+import Offer from "../pages/Offer/Offer";
 
 // User Pages
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
 const Cart = lazy(() => import("../pages/Cart/Cart"));
 const FAQ = lazy(() => import("../pages/FAQ/FAQ"));
 const Login = lazy(() => import("../pages/Login/Login"));
+const Contactus = lazy(() => import("../pages/Contactus/Contactus"));
 const ProductDetails = lazy(() =>
   import("../pages/ProductDetails/ProductDetails")
 );
@@ -204,12 +205,16 @@ export const routes = createBrowserRouter([
         element: <Shop />,
       },
       {
-        path: "/product/:id",
+        path: "/product/:slug",
         element: <ProductDetails />,
       },
       {
         path: "/about-us",
         element: <AboutUs />,
+      },
+      {
+        path: "/offers",
+        element: <Offer />,
       },
       {
         path: "/faq",
@@ -218,6 +223,10 @@ export const routes = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/contact-us",
+        element: <Contactus />,
       },
       {
         path: "/signup",

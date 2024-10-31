@@ -8,8 +8,17 @@ import { useGetFaviconQuery } from "./Redux/favicon/faviconApi";
 import { useGetBusinessInfoQuery } from "./Redux/businessInfoApi/businessInfoApi";
 import { useGetThemesQuery } from "./Redux/theme/themeApi";
 import { useGetSEOQuery } from "./Redux/seoApi";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function App() {
+  useEffect(() => {
+    AOS.init({
+      duration: 500,
+      once: false,
+    });
+  }, []);
+
   const authChecked = useAuthCheck();
 
   const { data: favicon, isLoading } = useGetFaviconQuery();

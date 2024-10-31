@@ -19,18 +19,6 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "Categories",
     },
-    subCategory: {
-      type: mongoose.Types.ObjectId,
-      ref: "SubCategory",
-    },
-    subSubCategory: {
-      type: mongoose.Types.ObjectId,
-      ref: "SubSubCategory",
-    },
-    brand: {
-      type: String,
-      required: true,
-    },
     discount: {
       type: Number,
       default: 0,
@@ -42,14 +30,8 @@ const productSchema = new mongoose.Schema(
     sellingPrice: {
       type: Number,
     },
-    purchasePrice: {
-      type: Number,
-    },
-    quantity: {
-      type: Number,
-    },
-    variants: {
-      type: Array,
+    duration: {
+      type: String,
     },
     rating: {
       type: Number,

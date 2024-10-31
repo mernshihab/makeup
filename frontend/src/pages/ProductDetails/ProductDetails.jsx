@@ -10,12 +10,13 @@ import RelatedProducts from "./RelatedProducts/RelatedProducts";
 
 export default function ProductDetails() {
   window.scroll(0, 0);
- 
+
   const [tab, setTab] = useState("description");
-  const params = useParams();
-  let slug = params?.id;
+  const { slug } = useParams();
   const { data, isLoading, isError, error, isSuccess } =
     useGetProductBySlugQuery(slug);
+
+  console.log("Data", data);
 
   const description = isSuccess ? data?.data?.description : "";
   const parcerDescription = parcer(description);
@@ -35,9 +36,9 @@ export default function ProductDetails() {
             <ProductInfo product={data?.data} />
           </div>
 
-          <div className="lg:w-[25%] bg-stone-50 p-4 text-sm">
+          {/* <div className="lg:w-[25%] bg-stone-50 p-4 text-sm">
             <RightSideInfo service={data?.data?.service} />
-          </div>
+          </div> */}
         </div>
 
         {/* Details */}

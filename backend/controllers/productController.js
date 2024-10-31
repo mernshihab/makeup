@@ -18,13 +18,12 @@ exports.addProduct = async (req, res) => {
     });
   }
 
-  const { title, variants } = req?.body;
+  const { title } = req?.body;
 
   const product = {
     ...req?.body,
     slug: slugify(`${title}-${Date.now()}`),
     images,
-    variants: variants && JSON.parse(variants),
   };
 
   try {
@@ -55,39 +54,24 @@ exports.addProduct = async (req, res) => {
 
 exports.getAllProducts = async (req, res) => {
   const paginationOptions = pick(req.query, ["page", "limit"]);
-  const { category, subCategory, subSubCategory, brand } = req.query;
+  const { category } = req.query;
   const { page, limit, skip } = calculatePagination(paginationOptions);
 
   try {
     const targetedCategory = await Categories.findOne({
       slug: category && category,
     });
-    const targetedSubCategory = await SubCategory.findOne({
-      slug: subCategory && subCategory,
-    });
-    const targetedSubSubCategory = await SubSubCategory.findOne({
-      slug: subSubCategory && subSubCategory,
-    });
-    const targetedBrand = await Brand.findOne({
-      slug: brand && brand,
-    });
 
     const categoryId = targetedCategory?._id;
-    const subCategoryId = targetedSubCategory?._id;
-    const subSubategoryId = targetedSubSubCategory?._id;
-    const brandName = targetedBrand?.name;
 
     let query = {};
     if (category) query.category = categoryId;
-    if (subCategory) query.subCategory = subCategoryId;
-    if (subSubCategory) query.subSubCategory = subSubategoryId;
-    if (brand) query.brand = brandName;
 
     const products = await Product.find(query)
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 })
-      .populate("category subCategory subSubCategory", "name slug icon");
+      .populate("category", "name slug icon");
 
     const total = await Product.countDocuments(query);
     const pages = Math.ceil(parseInt(total) / parseInt(limit));
@@ -114,7 +98,7 @@ exports.getAllProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
   try {
     const result = await Product.findById(req?.params?.id).populate(
-      "category subCategory subSubCategory"
+      "category"
     );
 
     if (!result) {
@@ -140,7 +124,7 @@ exports.getProductById = async (req, res) => {
 exports.getProductBySlug = async (req, res) => {
   try {
     const result = await Product.findOne({ slug: req?.params?.slug }).populate(
-      "category subCategory subSubCategory",
+      "category",
       "name slug icon"
     );
 
@@ -204,11 +188,10 @@ exports.updateProduct = async (req, res) => {
   const id = req?.params?.id;
   const images = req?.files?.map((file) => file.filename);
 
-  const { title, variants } = req?.body;
+  const { title } = req?.body;
 
   try {
     const isProduct = await Product.findById(id);
-    // console.log(isProduct);
     if (!isProduct) {
       images?.forEach((imagePath) => {
         const fullPath = `./uploads/products/${imagePath}`;
@@ -230,7 +213,6 @@ exports.updateProduct = async (req, res) => {
         ...req?.body,
         slug: slugify(`${title}-${Date.now()}`),
         images,
-        variants: JSON.parse(variants),
       };
 
       const imagePaths = isProduct?.images;
@@ -251,7 +233,6 @@ exports.updateProduct = async (req, res) => {
         ...req?.body,
         images: isProduct?.images,
         slug: slugify(`${title}-${Date.now()}`),
-        variants: JSON.parse(variants),
       };
 
       await Product.findByIdAndUpdate(id, product, {
@@ -288,7 +269,7 @@ exports.getFeaturedProducts = async (req, res) => {
     const products = await Product.find({ featured: true })
       .limit(req.query.limit)
       .sort({ createdAt: -1 })
-      .populate("category subCategory subSubCategory", "name slug icon");
+      .populate("category", "name slug icon");
 
     res.status(200).json({
       success: true,

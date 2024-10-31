@@ -1,4 +1,4 @@
-import { Navigation, A11y, Autoplay } from "swiper/modules";
+import { A11y, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
@@ -9,10 +9,9 @@ export default function Hero() {
   return (
     <section>
       <Swiper
-        modules={[Navigation, A11y, Autoplay]}
+        modules={[ A11y, Autoplay]}
         spaceBetween={50}
         slidesPerView={1}
-        navigation
         loop={true}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         onSwiper={(swiper) => {
@@ -21,21 +20,21 @@ export default function Hero() {
       >
         <SwiperSlide>
           <img
-            className="h-[80vh] w-full object-cover"
+            className="h-[40vh] md:h-[60vh] lg:h-[80vh] w-full object-cover"
             src="/images/banner/banner1.jpg"
             alt=""
           />
         </SwiperSlide>
         <SwiperSlide>
           <img
-            className="h-[80vh] w-full object-cover"
+            className="h-[40vh] md:h-[60vh] lg:h-[80vh] w-full object-cover"
             src="/images/banner/banner2.jpg"
             alt=""
           />
         </SwiperSlide>
         <SwiperSlide>
           <img
-            className="h-[80vh] w-full object-cover"
+            className="h-[40vh] md:h-[60vh] lg:h-[80vh] w-full object-cover"
             src="/images/banner/banner3.jpg"
             alt=""
           />

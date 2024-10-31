@@ -11,12 +11,19 @@ import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
 import { userLogout } from "../../Redux/user/userSlice";
 import { BsSearch } from "react-icons/bs";
 import SearchSidebar from "./SearchSidebar/SearchSidebar";
+import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
 
 export default function MainHeader() {
   const dispatch = useDispatch();
   const carts = useSelector((state) => state.cart.carts);
   const { loggedUser } = useSelector((state) => state.user);
   const { data: logo } = useGetMainLogoQuery();
+
+  const { data } = useGetCategoriesQuery();
+
+  const services = data?.data;
+
+  console.log(services);
 
   const [searchSidebar, setSearchSidebar] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -40,14 +47,13 @@ export default function MainHeader() {
           <div>
             <Link to="/">
               <img
-                // src={
-                //   logo?.data[0]?.logo === ""
-                //     ? "/images/logo/logo.png"
-                //     : `${import.meta.env.VITE_BACKEND_URL}/logo/${
-                //         logo?.data[0]?.logo
-                //       }`
-                // }
-                src="/images/logo/logo.png"
+                src={
+                  logo?.data[0]?.logo === ""
+                    ? "/images/logo/logo.png"
+                    : `${import.meta.env.VITE_BACKEND_URL}/logo/${
+                        logo?.data[0]?.logo
+                      }`
+                }
                 alt=""
                 className="w-28 sm:w-32 h-12 sm:h-14"
               />
@@ -81,7 +87,7 @@ export default function MainHeader() {
               <li>
                 <Link
                   className="py-1.5 px-2 hover:bg-gray-200 rounded-md duration-300"
-                  to="/about"
+                  to="/about-us"
                 >
                   About
                 </Link>
@@ -91,65 +97,27 @@ export default function MainHeader() {
                 onMouseEnter={() => setDropdownOpen(true)}
                 onMouseLeave={() => setDropdownOpen(false)}
               >
-                <span
+                <Link
+                  to="/services/all"
                   onClick={() => setDropdownOpen(!isDropdownOpen)}
-                  className="cursor-pointer"
+                  className=""
                 >
                   Services
-                </span>
+                </Link>
                 {isDropdownOpen && (
-                  <div className="absolute top-full mt-2 w-max bg-white shadow-lg p-4 grid grid-cols-3 gap-6 z-10">
-                    <div>
-                      <h3 className="font-bold">Body Care</h3>
-                      <ul>
-                        <li>Manicure And Pedicure</li>
-                        <li>Facials</li>
-                        <li>Brightening Polish</li>
-                        <li>Massage</li>
-                        <li>
-                          <Link to="/body-care">All Body Care</Link>
+                  <div className="absolute top-full w-40 bg-white shadow-lg p-3 left-0 z-10 rounded-sm">
+                    <ul className="w-full space-y-2">
+                      {services?.map((service) => (
+                        <li
+                          key={service?._id}
+                          className="border-b pb-1 hover:border-black duration-300"
+                        >
+                          <Link to={`/services/${service?.slug}`} className="font-semibold">
+                            {service?.name}
+                          </Link>
                         </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="font-bold">Hair Care</h3>
-                      <ul>
-                        <li>Hair Cut</li>
-                        <li>Hair Color</li>
-                        <li>Hair Treatment</li>
-                        <li>Hair Straightening</li>
-                        <li>
-                          <Link to="/hair-care">All Hair Care</Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="font-bold">Packages</h3>
-                      <ul>
-                        <li>Regular Packages</li>
-                        <li>Mom Packages</li>
-                        <li>
-                          <Link to="/packages">All Packages</Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="font-bold">Hair Removal</h3>
-                      <ul>
-                        <li>Threading</li>
-                        <li>Waxing</li>
-                        <li>
-                          <Link to="/hair-removal">All Hair Removal</Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="font-bold">Makeover</h3>
-                      <ul>
-                        <li>Henna Art</li>
-                        <li>Bridal</li>
-                      </ul>
-                    </div>
+                      ))}
+                    </ul>
                   </div>
                 )}
               </li>
@@ -164,17 +132,9 @@ export default function MainHeader() {
               <li>
                 <Link
                   className="py-1.5 px-2 hover:bg-gray-200 rounded-md duration-300"
-                  to="/career"
+                  to="/contact-us"
                 >
-                  Career
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="py-1.5 px-2 hover:bg-gray-200 rounded-md duration-300"
-                  to="/blog"
-                >
-                  Blog
+                  Contact Us
                 </Link>
               </li>
             </ul>

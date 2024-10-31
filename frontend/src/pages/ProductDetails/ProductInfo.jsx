@@ -19,135 +19,22 @@ export default function ProductInfo({ product }) {
   const carts = useSelector((state) => state.cart.carts);
   const wishlists = useSelector((state) => state.wishlist.wishlists);
 
-  const queryParams = new URLSearchParams(location.search);
-  const discount = queryParams.get("discount");
-
-  const {
-    slug,
-    title,
-    images,
-    brand,
-    category,
-    subCategory,
-    subSubCategory,
-    sellingPrice,
-    quantity,
-    variants,
-  } = product;
-
-  // Total Stock
-  const totakStock = variants?.length
-    ? variants?.reduce(
-        (quantity, item) => parseInt(quantity) + parseInt(item.quantity),
-        0
-      )
-    : quantity;
-  const price = variants?.length ? variants[0]?.sellingPrice : sellingPrice;
+  const { slug, title, images, category, duration, discount } = product;
 
   const [showImage, setShowImage] = useState(images[0]);
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
-  const [availableStock, setAvailableStock] = useState(totakStock);
-  const [selectedPrice, setSelectedPrice] = useState(price);
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
-  // const [selectedVariant ,  setSelectedVariant] = useState({});
-
-  useEffect(()=>{
-    setShowImage(images[0])
-  },[images])
-
-  const [colors, setColors] = useState([]);
-  const sizes = [
-    ...new Set(variants?.map((size) => size.size !== undefined && size.size)),
-  ];
+  const selectedPrice = product?.sellingPrice;
 
   useEffect(() => {
-    const uniqueSet = new Set();
-
-    variants.forEach((item) => {
-      const { color, colorCode } = item;
-      const combinationKey = `${color}-${colorCode}`;
-      uniqueSet.add(combinationKey);
-    });
-
-    const uniqueArray = Array.from(uniqueSet).map((combinationKey) => {
-      const [color, colorCode] = combinationKey.split("-");
-      return { color, colorCode };
-    });
-
-    setColors(uniqueArray);
-  }, [variants]);
-
-  useEffect(() => {
-    const findVariant = variants?.find(
-      (variant) =>
-        variant.color === selectedColor && variant.size === selectedSize
-    );
-    // setSelectedVariant(findVariant);
-
-    if (findVariant) {
-      setAvailableStock(findVariant?.quantity);
-      setSelectedPrice(findVariant?.sellingPrice);
-    } else {
-      setAvailableStock(totakStock);
-      setSelectedPrice(price);
-    }
-  }, [selectedSize, selectedColor, totakStock, price, variants]);
-
-  const handelSelectSize = (size) => {
-    if (selectedSize === size) {
-      setSelectedSize("");
-    } else {
-      setSelectedSize(size);
-    }
-  };
-
-  const handelColorSelect = (clr) => {
-    if (selectedColor === clr.color) {
-      setSelectedColor("");
-    } else {
-      setSelectedColor(clr.color);
-    }
-  };
-
-  useEffect(() => {
-    if (availableStock < selectedQuantity) {
-      setSelectedQuantity(1);
-    }
-  }, [availableStock, selectedQuantity]);
-
-  const handelDecrease = () => {
-    if (selectedQuantity > 1) {
-      setSelectedQuantity(selectedQuantity - 1);
-    }
-  };
-
-  const handelIncrease = () => {
-    if (availableStock > selectedQuantity) {
-      setSelectedQuantity(selectedQuantity + 1);
-    }
-  };
+    setShowImage(images[0]);
+  }, [images]);
 
   const handleBuyNow = () => {
-    if (variants?.length > 0 && sizes[0] && !selectedSize) {
-      return Swal.fire("", "Please Select Size", "warning");
-    }
-
-    if (variants?.length > 0 && !selectedColor) {
-      return Swal.fire("", "Please Select Color", "warning");
-    }
-
     const cartProduct = {
       _id: product._id,
       title: title,
       slug: product.slug,
       image: images[0],
       discount: discount,
-      price: selectedPrice,
-      quantity: selectedQuantity,
-      size: selectedSize,
-      color: selectedColor,
-      stock: availableStock,
     };
 
     dispatch(addToCart([cartProduct]));
@@ -155,25 +42,12 @@ export default function ProductInfo({ product }) {
   };
 
   const handelAddToCart = () => {
-    if (variants?.length > 0 && sizes[0] && !selectedSize) {
-      return Swal.fire("", "Please Select Size", "warning");
-    }
-
-    if (variants?.length > 0 && !selectedColor) {
-      return Swal.fire("", "Please Select Color", "warning");
-    }
-
     const cartProduct = {
       _id: product._id,
       title: title,
       slug: product.slug,
       image: images[0],
       discount: discount,
-      price: selectedPrice,
-      quantity: selectedQuantity,
-      size: selectedSize,
-      color: selectedColor,
-      stock: availableStock,
     };
 
     const findProduct = carts?.find(
@@ -204,19 +78,26 @@ export default function ProductInfo({ product }) {
   };
   const isWishlist = wishlists?.find((item) => item._id === product._id);
 
-  // const img = `${import.meta.env.VITE_BACKEND_URL}/products/${showImage}`;
-console.log(discount);
-
   return (
     <div className="lg:flex gap-6">
       {/* Image */}
-      <div className="lg:w-[42%]">
-        <div className="relative">
-          {/* <img src={img} alt="" className="w-full h-[350px] rounded" /> */}
+      <div className="lg:w-[50%] flex gap-2">
+        <div className="grid gap-2">
+          {images.map((img, index) => (
+            <div key={index} onClick={() => setShowImage(img)}>
+              <img
+                src={`${import.meta.env.VITE_BACKEND_URL}/products/${img}`}
+                alt=""
+                className="w-full h-20 rounded cursor-pointer object-cover"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="relative w-full">
           <img
             src={`${import.meta.env.VITE_BACKEND_URL}/products/${showImage}`}
             alt=""
-            className="w-full h-[350px] rounded"
+            className="w-full md:h-[400px] object-cover rounded"
           />
 
           {/* Discount */}
@@ -226,41 +107,21 @@ console.log(discount);
             </div>
           )}
         </div>
-
-        <div className="mt-5 grid grid-cols-5 gap-2">
-          {images.map((img, index) => (
-            <div key={index} onClick={() => setShowImage(img)}>
-              <img
-                src={`${import.meta.env.VITE_BACKEND_URL}/products/${img}`}
-                alt=""
-                className="w-full h-12 rounded"
-              />
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Details */}
-      <div className="lg:w-[58%] mt-4 lg:mt-0">
+      <div className="lg:w-[65%] mt-4 lg:mt-0">
         {/* title  */}
         <div>
           <h1 className="text-2xl font-medium text-neutral">{title}</h1>
           <div className="text-sm">
             <p>
-              <span className="text-neutral/80">Brand:</span>{" "}
-              <span>{brand ? brand : "No Brand"}</span>
+              <span className="text-neutral/80">Duration:</span>{" "}
+              <span>{duration && duration} Min</span>
             </p>
             <p>
               <span className="text-neutral/80">Category:</span>{" "}
-              <span>
-                {category?.name}
-                {subCategory && ` - ${subCategory?.name}`}
-                {subSubCategory && ` - ${subSubCategory?.name}`}
-              </span>
-            </p>
-            <p>
-              <span className="text-neutral/80">Available Stock:</span>{" "}
-              <span>{availableStock}</span>
+              <span>{category?.name}</span>
             </p>
           </div>
         </div>
@@ -288,77 +149,10 @@ console.log(discount);
               </p>
               {discount > 0 && (
                 <del className="text-neutral/70">
-                  ৳{(selectedPrice * discount) / 100}
+                  ৳ {selectedPrice}
                 </del>
               )}
             </div>
-          </div>
-        </div>
-
-        {colors?.length > 0 && (
-          <div className="flex gap-4 items-center my-4">
-            <p>Color :</p>
-
-            <div className="flex gap-2 items-center">
-              {colors?.map((clr) => (
-                <button
-                  key={clr._id}
-                  onClick={() => handelColorSelect(clr)}
-                  className={`text-sm p-4 rounded-full border scale-[.96] hover:scale-[1] duration-300`}
-                  style={{
-                    backgroundColor: clr.colorCode,
-                    borderColor:
-                      clr.color === selectedColor ? "#f47c20" : "#DDD",
-                  }}
-                ></button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Sizes */}
-        {sizes?.length > 0 && sizes[0] && (
-          <div className="flex gap-4 items-center my-4">
-            <p>Size :</p>
-
-            <div className="flex gap-2 items-center">
-              {sizes?.map((size) => (
-                <button
-                  key={size}
-                  onClick={() => handelSelectSize(size)}
-                  className={`${
-                    size === selectedSize && "bg-primary text-base-100"
-                  } text-[15px] py-1.5 px-2.5 rounded border scale-[.96] hover:scale-[1] hover:border-primary duration-300`}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Quantity */}
-        <div className="py-3 flex gap-4 items-center border-y">
-          <h3>Quantity: </h3>
-
-          <div className="flex gap-2">
-            <button
-              onClick={handelDecrease}
-              className="text-2xl hover:text-neutral duration-200"
-            >
-              <FiMinusCircle />
-            </button>
-            <div>
-              <p className="w-10 font-semibold text-center">
-                {selectedQuantity}
-              </p>
-            </div>
-            <button
-              onClick={handelIncrease}
-              className="text-2xl hover:text-neutral duration-200"
-            >
-              <FiPlusCircle />
-            </button>
           </div>
         </div>
 
