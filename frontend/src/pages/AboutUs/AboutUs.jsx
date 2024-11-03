@@ -3,9 +3,10 @@ import Spinner from "../../components/Spinner/Spinner";
 import parcer from "html-react-parser";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
-import Whychoose from "../../components/Whychoose/Whychoose";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
-// Utility function to format numbers
 const formatNumber = (number) => {
   if (number >= 1000000) return `${(number / 1000000).toFixed(0)}M`;
   if (number >= 1000) return `${(number / 1000).toFixed(0)}K`;
@@ -18,11 +19,29 @@ export default function AboutUs() {
   const about = data?.data[0];
   const parcerDescription = about?.description && parcer(about?.description);
 
-  // Intersection observer for counting animation
   const { ref, inView } = useInView({
-    triggerOnce: true, // Run only once when scrolled into view
-    threshold: 0.3, // Start counting when 30% of the element is visible
+    triggerOnce: true,
+    threshold: 0.3,
   });
+
+  const gallery = [
+    "/images/news/news1.jpg",
+    "/images/news/news2.jpg",
+    "/images/news/news3.jpg",
+    "/images/news/news4.jpg",
+    "/images/news/news5.jpg",
+    "/images/news/news6.jpg",
+    "/images/news/news7.jpg",
+    "/images/news/news8.jpg",
+    "/images/news/news9.jpg",
+    "/images/news/news10.jpg",
+    "/images/news/news11.jpg",
+    "/images/news/news12.jpg",
+    "/images/news/news13.jpg",
+    "/images/news/news14.jpg",
+    "/images/news/news15.jpg",
+    "/images/news/news16.jpg",
+  ];
 
   if (isLoading) {
     return <Spinner />;
@@ -106,7 +125,39 @@ export default function AboutUs() {
             />
           </div>
         </div>
-        <Whychoose/>
+        {/* <Whychoose/> */}
+
+        <div className="mt-8">
+          <h2>Monir Hossain's Activities</h2>
+          <div className="mt-5">
+            <PhotoProvider>
+              <ResponsiveMasonry
+                columnsCountBreakPoints={{ 350: 3, 750: 3, 900: 3 }}
+              >
+                <Masonry gutter="7px">
+                  {gallery?.map((gallery, i) => (
+                    <PhotoView
+                      key={i}
+                      // src={`${import.meta.env.VITE_BACKEND_URL}/gallery/${
+                      //   gallery?.image
+                      // }`}
+                      src={gallery}
+                    >
+                      <img
+                        // src={`${import.meta.env.VITE_BACKEND_URL}/gallery/${
+                        //   gallery?.image
+                        // }`}
+                        src={gallery}
+                        alt=""
+                        className="block"
+                      />
+                    </PhotoView>
+                  ))}
+                </Masonry>
+              </ResponsiveMasonry>
+            </PhotoProvider>
+          </div>
+        </div>
       </div>
     </section>
   );
