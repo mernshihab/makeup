@@ -6,56 +6,9 @@ export default function Academy() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  // const courses = [
-  //   {
-  //     imageUrl: "https://via.placeholder.com/300x400", // Replace with actual image URL
-  //     title: "MAKEUP FOUNDATION COURSE WITH SELINA MANIR",
-  //     instructor: "Selina Manir",
-  //     location: "London",
-  //     duration: 3,
-  //     time: "10:00 to 16:30",
-  //     description:
-  //       "Specifically designed for those interested in learning the foundations of...",
-  //     enrolled: 0,
-  //     originalPrice: "995.00",
-  //     discountedPrice: "1249.00",
-  //     discount: true,
-  //   },
-  //   {
-  //     imageUrl: "https://via.placeholder.com/300x400", // Replace with actual image URL
-  //     title: "MAKEUP FOUNDATION COURSE WITH SELINA MANIR",
-  //     instructor: "Selina Manir",
-  //     location: "London",
-  //     duration: 3,
-  //     time: "10:00 to 16:30",
-  //     description:
-  //       "Specifically designed for those interested in learning the foundations of...",
-  //     enrolled: 0,
-  //     originalPrice: "995.00",
-  //     discountedPrice: "1249.00",
-  //     discount: true,
-  //   },
-  //   {
-  //     imageUrl: "https://via.placeholder.com/300x400", // Replace with actual image URL
-  //     title: "MAKEUP FOUNDATION COURSE WITH SELINA MANIR",
-  //     instructor: "Selina Manir",
-  //     location: "London",
-  //     duration: 3,
-  //     time: "10:00 to 16:30",
-  //     description:
-  //       "Specifically designed for those interested in learning the foundations of...",
-  //     enrolled: 0,
-  //     originalPrice: "995.00",
-  //     discountedPrice: "1249.00",
-  //     discount: true,
-  //   },
-  // ];
-
   const { data, isLoading, error } = useGetAllAcademiesQuery();
 
   const courses = data?.data;
-
-  console.log(courses);
 
   return (
     <section className="py-10">

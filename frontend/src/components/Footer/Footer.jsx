@@ -25,10 +25,10 @@ export default function Footer() {
   }
 
   return (
-    <footer className="pt-8 pb-4 bg-[#e2c8d6]">
+    <footer className="pt-8 pb-4 bg-gray-200">
       <div className="container">
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-          <div className="md:col-span-2">
+        <div className="grid md:grid-cols-5 gap-8">
+          <div className="md:col-span-1">
             <div className="w-max">
               <Link to="/">
                 <img
@@ -53,68 +53,65 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
-            <h2 className="mb-3 text-base font-bold uppercase text-neutral/90">
-              Categories
-            </h2>
-            <ul className="text-neutral-content text-[15px]">
-              {fiveCategories?.map((category, i) => (
-                <li key={i} className="mb-2">
-                  <Link
-                    to={`/shops/${category?.slug}`}
-                    className="hover:underline"
-                  >
-                    {category?.name}
+          <div className="md:col-span-4 grid grid-cols-2 md:grid-cols-3">
+            <div>
+              <h2 className="mb-3 text-start text-base font-bold uppercase text-neutral/90">
+                Services
+              </h2>
+              <ul className="text-neutral-content text-[15px]">
+                {fiveCategories?.map((category, i) => (
+                  <li key={i} className="mb-2">
+                    <Link
+                      to={`/shops/${category?.slug}`}
+                      className="hover:underline"
+                    >
+                      {category?.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="mb-3 text-start text-base font-bold uppercase text-neutral/90">
+                Quick Access
+              </h2>
+              <ul className="text-neutral-content text-[15px]">
+                <li className="mb-2">
+                  <Link to="/about-us" className="hover:underline">
+                    About Us
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </div>
 
-          <div>
-            <h2 className="mb-3 text-base font-bold uppercase text-neutral/90">
-              Information
-            </h2>
-            <ul className="text-neutral-content text-[15px]">
-              <li className="mb-2">
-                <Link to="/shops" className="hover:underline">
-                  Shop
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/about-us" className="hover:underline">
-                  About Us
-                </Link>
-              </li>
+                <li className="mb-2">
+                  <Link to="/" className="hover:underline">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li className="mb-2">
+                  <Link to="/" className="hover:underline">
+                    Terms & Conditions
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-              <li className="mb-2">
-                <Link to="/" className="hover:underline">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/" className="hover:underline">
-                  Terms & Conditions
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="mb-3 text-base font-bold uppercase text-neutral/90">
-              Get in Touch
-            </h2>
-            <ul className="text-neutral-content text-[15px]">
-              <li>
-                <p>{contact?.data[0]?.phone}</p>
-              </li>
-              <li className="my-1">
-                <p>{contact?.data[0]?.email}</p>
-              </li>
-              <li>
-                <p className="italic">{contact?.data[0]?.address}</p>
-              </li>
-            </ul>
+            <div className="hidden md:block">
+              <h2 className="mb-3 text-start text-base font-bold uppercase text-neutral/90">
+                Get in Touch
+              </h2>
+              <ul className="text-neutral-content text-[15px]">
+                <li>
+                  <p>{contact?.data[0]?.phone}</p>
+                </li>
+                <li className="my-1">
+                  <p>{contact?.data[0]?.email}</p>
+                </li>
+                <li>
+                  <p className="italic">{contact?.data[0]?.address}</p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -131,7 +128,7 @@ export default function Footer() {
         <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700" /> */}
 
         {/* bottom */}
-        <div className="sm:flex sm:items-center sm:justify-between">
+        <div className="sm:flex mt-6 md:mt-0 sm:items-center sm:justify-between">
           <span className="text-[15px] text-neutral-content">
             Copyright© {yearNow != startYear && startYear + " -"} {yearNow}{" "}
             {businessInfo?.companyName}. All Rights Reserved. develop by{" "}

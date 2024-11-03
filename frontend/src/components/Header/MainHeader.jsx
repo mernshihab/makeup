@@ -11,6 +11,7 @@ import { userLogout } from "../../Redux/user/userSlice";
 import { BsSearch } from "react-icons/bs";
 import SearchSidebar from "./SearchSidebar/SearchSidebar";
 import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
+import SearchBox from "./SearchBox";
 
 export default function MainHeader() {
   const dispatch = useDispatch();
@@ -156,7 +157,9 @@ export default function MainHeader() {
           </nav>
 
           <div className="hidden sm:flex gap-3 lg:gap-6 items-center">
-            <FiSearch className="text-xl lg:text-2xl" />
+          <div className="hidden sm:block sm:w-1/2 xl:w-3/5">
+            <SearchBox />
+          </div>
             {loggedUser?.success ? (
               <div className="relative">
                 <button

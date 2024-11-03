@@ -96,30 +96,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* sales */}
-      <div className="mt-4 bg-base-100 p-4 rounded shadow">
-        <p>Sales Report</p>
-
-        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
-          <div className="flex justify-between items-center rounded-lg p-4 border">
-            <div>
-              <p className="text-neutral font-dinMedium">Total Sales</p>
-              <div className="flex items-end gap-1">
-                <h3 className="text-primary font-bold">
-                  {orders?.data.reduce(
-                    (total, item) => total + item.totalPrice,
-                    0
-                  )}
-                </h3>
-                <small>tk</small>
-              </div>
-            </div>
-            <div className="bg-primary text-base-100 w-11 h-11 rounded-lg flex justify-center items-center">
-              <FaMoneyBillTrendUp className="text-xl" />
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Order */}
       <div className="mt-4 bg-base-100 p-4 rounded shadow">

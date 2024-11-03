@@ -57,6 +57,7 @@ exports.getAllAcademies = async (req, res) => {
 
 // 3. Get Academy by Slug
 exports.getAcademyBySlug = async (req, res) => {
+  console.log("Slug:", req.params.slug);
   try {
     const academy = await Academy.findOne({ slug: req.params.slug });
     if (!academy) {

@@ -5,12 +5,11 @@ import {
   MdMonitor,
   MdOutlineSettings,
 } from "react-icons/md";
-import { SiBrandfolder } from "react-icons/si";
+import { SiBrandfolder, SiFuturelearn } from "react-icons/si";
 import { RiAdminFill } from "react-icons/ri";
 import { BsCart4 } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
 import { FaRegMessage } from "react-icons/fa6";
-import { BiSolidShoppingBags } from "react-icons/bi";
 import SidebarItems from "./SidebarItems";
 import { useGetMainLogoQuery } from "../../../Redux/logo/logoApi";
 import { VscPreview } from "react-icons/vsc";
@@ -26,16 +25,7 @@ const adminSidebarItems = [
     title: "Dashbaord",
     path: "/admin/dashboard",
   },
-  {
-    icon: <MdOutlineCategory />,
-    title: "Services Category",
-    path: "/admin/services",
-  },
-  {
-    icon: <SiBrandfolder />,
-    title: "Brand",
-    path: "/admin/brands",
-  },
+
   {
     icon: <FaRegMessage />,
     title: "Contact Message",
@@ -45,6 +35,11 @@ const adminSidebarItems = [
     icon: <SiBrandfolder />,
     title: "Gallery",
     path: "/admin/gallery",
+  },
+  {
+    icon: <MdOutlineCategory />,
+    title: "Services Category",
+    path: "/admin/services",
   },
   {
     icon: <BsCart4 />,
@@ -62,7 +57,7 @@ const adminSidebarItems = [
   },
 
   {
-    icon: <BsCart4 />,
+    icon: <SiFuturelearn />,
     title: "Academy",
     subMenu: [
       {
@@ -76,18 +71,8 @@ const adminSidebarItems = [
     ],
   },
   {
-    icon: <BiSolidShoppingBags />,
-    title: "Order",
-    subMenu: [
-      {
-        title: "All Orders",
-        path: "/admin/order/all-orders",
-      },
-    ],
-  },
-  {
     icon: <MdFlashOn />,
-    title: "Flash Deal",
+    title: "Offer",
     path: "/admin/flash-deal",
   },
   {
@@ -133,20 +118,7 @@ const adminSidebarItems = [
       },
     ],
   },
-  {
-    icon: <MdOutlineSettings />,
-    title: "E-commerce Setting",
-    subMenu: [
-      {
-        title: "Coupon",
-        path: "/admin/ecommerce-setting/coupons",
-      },
-      {
-        title: "Shipping Configuration",
-        path: "/admin/ecommerce-setting/shipping-configuration",
-      },
-    ],
-  },
+  
   {
     icon: <IoMdSettings />,
     title: "General Setting",

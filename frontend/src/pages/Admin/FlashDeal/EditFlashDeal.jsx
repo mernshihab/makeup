@@ -74,7 +74,7 @@ export default function EditFlashDeal() {
 
   return (
     <section className="bg-base-100 rounded p-3 text-neutral">
-      <p>Flash Deal Information</p>
+      <p>Offer Information</p>
 
       <form
         onSubmit={handleAddFlashDeal}
@@ -116,7 +116,7 @@ export default function EditFlashDeal() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <p>Products</p>
+          <p>Services</p>
           <Select
             multi
             options={products}

@@ -60,7 +60,7 @@ export default function AddFlashDeal() {
 
   return (
     <section className="bg-base-100 rounded p-3 text-neutral">
-      <p>Flash Deal Information</p>
+      <p>Offer Information</p>
 
       <form
         onSubmit={handleAddFlashDeal}
@@ -99,7 +99,7 @@ export default function AddFlashDeal() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <p>Products</p>
+          <p>Services</p>
           <Select
             multi
             options={products}
@@ -128,6 +128,7 @@ export default function AddFlashDeal() {
                 <tbody>
                   {selectedProducts?.map((product, productIndex) => (
                     <tr>
+                      
                       <td className="border-r">
                         <div className="flex items-center gap-2">
                           <img

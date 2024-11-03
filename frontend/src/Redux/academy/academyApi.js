@@ -6,7 +6,7 @@ export const academyApi = apiSlice.injectEndpoints({
     // Get all academies
     getAllAcademies: builder.query({
       query: (query) => ({
-        url: `/academy/all-academies`,
+        url: `/academy`,
         method: "GET",
         params: query,
       }),
@@ -16,7 +16,7 @@ export const academyApi = apiSlice.injectEndpoints({
     // Get academy by ID
     getAcademyById: builder.query({
       query: (id) => ({
-        url: `/academy/id/${id}`,
+        url: `/academy/${id}`,
         method: "GET",
       }),
       providesTags: ["academy"],

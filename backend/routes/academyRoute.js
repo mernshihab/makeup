@@ -24,9 +24,9 @@ const upload = multer({ storage: storage });
 
 // Routes
 router.post("/add-academy", upload.single("image"), createAcademy);
-router.get("/all-academies", getAllAcademies);
-router.get("/academy/:slug", getAcademyBySlug);
-router.get("/academy/id/:id", getAcademyById);
+router.get("/", getAllAcademies);
+router.get("/:slug", getAcademyBySlug);
+router.get("/:id", getAcademyById);
 router.patch("/update-academy/:id", upload.single("image"), updateAcademy);
 router.delete("/delete-academy/:id", deleteAcademy);
 

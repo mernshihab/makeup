@@ -3,7 +3,6 @@ import { MdDeleteOutline } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Spinner from "../../../components/Spinner/Spinner";
 import Swal from "sweetalert2";
-import { useDeleteBrandMutation } from "../../../Redux/brand/brandApi";
 import {
   useDeleteFlashDealMutation,
   useGetFlashDealQuery,
@@ -88,9 +87,9 @@ export default function FlashDealList() {
   return (
     <div>
       <div className="flex justify-between items-end mb-3">
-        <h1 className="text-lg text-neutral-content">Flash Deal</h1>
+        <h1 className="text-lg text-neutral-content">Offers</h1>
         <Link to="/admin/flash-deal/add" className="primary_btn text-sm">
-          Add New Flash Deal
+          Add New Offer
         </Link>
       </div>
 
@@ -100,7 +99,7 @@ export default function FlashDealList() {
             <tr>
               <th>SL</th>
               <th>Title</th>
-              <th>Total Products</th>
+              <th>Total Services</th>
               <th>Start Date</th>
               <th>End Date</th>
               <th>Status</th>

@@ -14,6 +14,7 @@ import Academy from "../pages/Academy/Academy";
 import AddAcademy from "../pages/Admin/Academy/AddAcademy";
 import AcademyList from "../pages/Admin/Academy/AcademyList";
 import EditAcademy from "../pages/Admin/Academy/EditAcademy";
+import AcademyDetails from "../components/AcademyCard/AcademyDetails";
 
 // User Pages
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
@@ -216,6 +217,10 @@ export const routes = createBrowserRouter([
       {
         path: "/academy",
         element: <Academy />,
+      },
+      {
+        path: "/academy/:slug",
+        element: <AcademyDetails />,
       },
       {
         path: "/about-us",
