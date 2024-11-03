@@ -5,9 +5,9 @@ export default defineConfig({
   plugins: [react()],
   build: { chunkSizeWarningLimit: 2000 },
   server: {
-    port: 3200,
+    port: 3900,
   },
   preview: {
-    port: 3200,
+    port: 3900,
   },
 });
