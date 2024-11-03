@@ -97,9 +97,7 @@ exports.getAllProducts = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
   try {
-    const result = await Product.findById(req?.params?.id).populate(
-      "category"
-    );
+    const result = await Product.findById(req?.params?.id).populate("category");
 
     if (!result) {
       return res.status(404).json({
@@ -185,23 +183,13 @@ exports.deleteProductById = async (req, res) => {
 };
 
 exports.updateProduct = async (req, res) => {
-  const id = req?.params?.id;
-  const images = req?.files?.map((file) => file.filename);
-
-  const { title } = req?.body;
+  const id = req.params.id;
+  const images = req.files ? req.files.map((file) => file.filename) : null; // New images, if any
 
   try {
-    const isProduct = await Product.findById(id);
-    if (!isProduct) {
-      images?.forEach((imagePath) => {
-        const fullPath = `./uploads/products/${imagePath}`;
-        fs.unlink(fullPath, (err) => {
-          if (err) {
-            console.error(err);
-          }
-        });
-      });
+    const product = await Product.findById(id);
 
+    if (!product) {
       return res.status(404).json({
         success: false,
         message: "Product not found",
@@ -209,48 +197,47 @@ exports.updateProduct = async (req, res) => {
     }
 
     if (images && images.length > 0) {
-      const product = {
-        ...req?.body,
-        slug: slugify(`${title}-${Date.now()}`),
-        images,
-      };
-
-      const imagePaths = isProduct?.images;
-      imagePaths.forEach((imagePath) => {
-        const fullPath = `./uploads/products/${imagePath}`;
+      product.images.forEach((imagePath) => {
+        const fullPath = path.join(
+          __dirname,
+          `../../uploads/products/${imagePath}`
+        );
         fs.unlink(fullPath, (err) => {
           if (err) {
-            console.error(err);
+            console.error(`Error deleting file ${fullPath}:`, err);
           }
         });
       });
-
-      await Product.findByIdAndUpdate(id, product, {
-        new: true,
-      });
-    } else {
-      const product = {
-        ...req?.body,
-        images: isProduct?.images,
-        slug: slugify(`${title}-${Date.now()}`),
-      };
-
-      await Product.findByIdAndUpdate(id, product, {
-        new: true,
-      });
     }
+
+    const updatedProductData = {
+      ...req.body,
+      images: images && images.length > 0 ? images : product.images,
+    };
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      updatedProductData,
+      {
+        new: true,
+      }
+    );
 
     res.status(200).json({
       success: true,
       message: "Product updated successfully",
+      data: updatedProduct,
     });
   } catch (error) {
-    if (images.length > 0) {
+    if (images && images.length > 0) {
       images.forEach((imagePath) => {
-        const fullPath = `./uploads/products/${imagePath}`;
+        const fullPath = path.join(
+          __dirname,
+          `../../uploads/products/${imagePath}`
+        );
         fs.unlink(fullPath, (err) => {
           if (err) {
-            console.error(err);
+            console.error(`Error deleting file ${fullPath}:`, err);
           }
         });
       });

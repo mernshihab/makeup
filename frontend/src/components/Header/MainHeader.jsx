@@ -3,7 +3,6 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { BiLogOutCircle } from "react-icons/bi";
 import { FiLogIn, FiMonitor, FiSearch } from "react-icons/fi";
 import { IoBagCheckOutline } from "react-icons/io5";
-import { RiShoppingCartLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -15,15 +14,12 @@ import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
 
 export default function MainHeader() {
   const dispatch = useDispatch();
-  const carts = useSelector((state) => state.cart.carts);
   const { loggedUser } = useSelector((state) => state.user);
   const { data: logo } = useGetMainLogoQuery();
 
   const { data } = useGetCategoriesQuery();
 
   const services = data?.data;
-
-  console.log(services);
 
   const [searchSidebar, setSearchSidebar] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -112,7 +108,10 @@ export default function MainHeader() {
                           key={service?._id}
                           className="border-b pb-1 hover:border-black duration-300"
                         >
-                          <Link to={`/services/${service?.slug}`} className="font-semibold">
+                          <Link
+                            to={`/services/${service?.slug}`}
+                            className="font-semibold"
+                          >
                             {service?.name}
                           </Link>
                         </li>
@@ -132,6 +131,22 @@ export default function MainHeader() {
               <li>
                 <Link
                   className="py-1.5 px-2 hover:bg-gray-200 rounded-md duration-300"
+                  to="/our-brides"
+                >
+                  Our Brides
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="py-1.5 px-2 hover:bg-gray-200 rounded-md duration-300"
+                  to="/academy"
+                >
+                  Academy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="py-1.5 px-2 hover:bg-gray-200 rounded-md duration-300"
                   to="/contact-us"
                 >
                   Contact Us
@@ -142,19 +157,6 @@ export default function MainHeader() {
 
           <div className="hidden sm:flex gap-3 lg:gap-6 items-center">
             <FiSearch className="text-xl lg:text-2xl" />
-
-            <Link
-              to="/cart"
-              className="flex gap-2 lg:gap-3 items-center hover:text-primary duration-300"
-            >
-              <div className="relative">
-                <RiShoppingCartLine className="text-xl lg:text-2xl" />
-                <div className="absolute flex items-center justify-center w-4 h-4 text-xs font-bold bg-primary text-base-100 rounded-full -top-2 -right-2">
-                  <span className="mt-px">{carts?.length || 0}</span>
-                </div>
-              </div>
-            </Link>
-
             {loggedUser?.success ? (
               <div className="relative">
                 <button

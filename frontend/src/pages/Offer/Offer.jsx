@@ -1,52 +1,47 @@
 import { useEffect } from "react";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import { useGetAllProductsQuery } from "../../Redux/product/productApi";
 import Contact from "../../components/HomeComponents/Contact/Contact";
+import CampaignBanner from "../../components/Campaign/CampaignBanner/CampaignBanner";
+import TopCampaignBanner from "../../components/Campaign/TopCampaignBanner/TopCampaignBanner";
+import { useGetActiveFlashDealQuery } from "../../Redux/flashDeal/flashDeal";
+import AllProductCard from "../../components/ProductCard/AllProductCard";
+import Spinner from "../../components/Spinner/Spinner";
 
 export default function Offer() {
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
 
-  const { data, isLoading, isError, error } = useGetAllProductsQuery();
+  const { data: offer, isLoading } = useGetActiveFlashDealQuery();
 
-  const products = data?.data;
-
-  console.log(products);
+  const offerProducts = offer?.data;
 
   return (
     <section>
       <div className="mb-8">
-        <img
-          src="/images/offer/offer_banner.jpg"
-          className="max-h-[50vh] w-full object-cover"
-          alt="Banner"
-        />
+        <TopCampaignBanner />
       </div>
       <div className="container">
-        <div className="mb-8">
-          <h2>Grab your offer</h2>
-          <div>
-            <ProductCard products={products} />
-          </div>
-        </div>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          offerProducts?.length > 0 &&
+          offerProducts.map((offers) => (
+            <div key={offers?._id} className="mb-8">
+              <h2>{offers?.title}</h2>
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+                {offers?.flashProducts?.map((product, i) => (
+                  <AllProductCard
+                    key={product?.product?._id || i}
+                    offerDiscount={product?.discount}
+                    products={product?.product}
+                  />
+                ))}
+              </div>
+            </div>
+          ))
+        )}
       </div>
-      <div className="container flex gap-4">
-        <div>
-          <img
-            src="/images/offer/offer_banner2.png"
-            className="max-h-[35vh] w-full rounded"
-            alt="Banner"
-          />
-        </div>
-        <div>
-          <img
-            src="/images/offer/offer_banner2.png"
-            className="max-h-[35vh] w-full rounded"
-            alt="Banner"
-          />
-        </div>
-      </div>
+      <CampaignBanner />
       <div className="container">
         <Contact />
       </div>

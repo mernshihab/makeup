@@ -49,7 +49,7 @@ export const productApi = apiSlice.injectEndpoints({
         method: "PATCH",
         body: formData,
       }),
-      invalidatesTags: ["product", "review"],
+      invalidatesTags: ["product"],
     }),
 
     deleteProduct: builder.mutation({

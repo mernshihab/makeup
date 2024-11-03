@@ -9,6 +9,7 @@ import { SiBrandfolder } from "react-icons/si";
 import { RiAdminFill } from "react-icons/ri";
 import { BsCart4 } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
+import { FaRegMessage } from "react-icons/fa6";
 import { BiSolidShoppingBags } from "react-icons/bi";
 import SidebarItems from "./SidebarItems";
 import { useGetMainLogoQuery } from "../../../Redux/logo/logoApi";
@@ -27,21 +28,8 @@ const adminSidebarItems = [
   },
   {
     icon: <MdOutlineCategory />,
-    title: "Category",
-    subMenu: [
-      {
-        title: "Categories",
-        path: "/admin/category/categories",
-      },
-      {
-        title: "Sub Categories",
-        path: "/admin/category/sub-categories",
-      },
-      {
-        title: "Sub SubCategories",
-        path: "/admin/category/sub-sub-categories",
-      },
-    ],
+    title: "Services Category",
+    path: "/admin/services",
   },
   {
     icon: <SiBrandfolder />,
@@ -49,16 +37,41 @@ const adminSidebarItems = [
     path: "/admin/brands",
   },
   {
+    icon: <FaRegMessage />,
+    title: "Contact Message",
+    path: "/admin/contact-msg",
+  },
+  {
+    icon: <SiBrandfolder />,
+    title: "Gallery",
+    path: "/admin/gallery",
+  },
+  {
     icon: <BsCart4 />,
-    title: "Product",
+    title: "Services",
     subMenu: [
       {
-        title: "Add New Product",
-        path: "/admin/product/add-product",
+        title: "Add New Service",
+        path: "/admin/service/add-service",
       },
       {
-        title: "All Products",
-        path: "/admin/product/all-products",
+        title: "All Services",
+        path: "/admin/service/all-services",
+      },
+    ],
+  },
+
+  {
+    icon: <BsCart4 />,
+    title: "Academy",
+    subMenu: [
+      {
+        title: "Add New Academy",
+        path: "/admin/academy/add-academy",
+      },
+      {
+        title: "All Academy",
+        path: "/admin/academy/all-academy",
       },
     ],
   },

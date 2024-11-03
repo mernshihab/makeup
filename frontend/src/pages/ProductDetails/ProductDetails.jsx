@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { useGetProductBySlugQuery } from "../../Redux/product/productApi";
 import Spinner from "../../components/Spinner/Spinner";
 import ProductInfo from "./ProductInfo";
-import RightSideInfo from "./RightSideInfo";
 import { useState } from "react";
 import Reviews from "./Review/Reviews";
 import RelatedProducts from "./RelatedProducts/RelatedProducts";
@@ -15,8 +14,6 @@ export default function ProductDetails() {
   const { slug } = useParams();
   const { data, isLoading, isError, error, isSuccess } =
     useGetProductBySlugQuery(slug);
-
-  console.log("Data", data);
 
   const description = isSuccess ? data?.data?.description : "";
   const parcerDescription = parcer(description);

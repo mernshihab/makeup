@@ -38,20 +38,19 @@ export default function Checkout() {
   const subTotal = carts?.reduce(
     (price, item) =>
       price +
-      item.quantity * parseInt(item.price - (item.price * item.discount) / 100),
+      parseInt(item.price - (item.price * item.discount) / 100),
     0
   );
 
   const tax = 0;
-  const discountTk = ((subTotal + tax + parseInt(shipping)) * discount) / 100;
-  const grandTotal = subTotal + tax + parseInt(shipping) - discountTk;
+  const discountTk = ((subTotal + tax) * discount) / 100;
+  const grandTotalPrice = subTotal + tax + parseInt(shipping) - discountTk;
+
+  const grandTotal = grandTotalPrice.toFixed(2);
 
   const handelPlaceOrder = async (e) => {
     e.preventDefault();
 
-    if (shipping == 0) {
-      return Swal.fire("", "Please select shipping area", "warning");
-    }
 
     const form = e.target;
 
@@ -63,10 +62,6 @@ export default function Checkout() {
       products.push({
         productId: product._id,
         discount: product?.discount,
-        quantity: product.quantity,
-        size: product.size,
-        color: product.color,
-        variant: product?.variant,
       })
     );
 
@@ -76,32 +71,20 @@ export default function Checkout() {
         address,
         note,
       },
-      paymentMethod,
       products,
       totalPrice: grandTotal,
-      shippingCharge: shipping,
     };
 
-    if (paymentMethod === "cod") {
       const res = await addOrder(order);
       if (res?.data?.success) {
         Swal.fire("", "order success", "success");
         dispatch(clearCart());
         form.reset();
-        navigate("/shops");
+        navigate("/services/all");
       } else {
         toast.error("Something Wrong");
         console.log(res);
       }
-    } else if (paymentMethod === "ssl") {
-      const res = await initSslPayment(order);
-      if (res?.data?.success) {
-        dispatch(clearCart());
-        form.reset();
-        window.location.href = res?.data?.data;
-        // window.location.replace(res?.data?.data);
-      }
-    }
   };
 
   const handelDiscount = async () => {
@@ -175,7 +158,7 @@ export default function Checkout() {
               </div>
 
               <div className="text-sm mt-2">
-                <h3>Full Adress</h3>
+                <h3>Your Adress</h3>
                 <textarea
                   name="fullAdress"
                   rows="3"
@@ -186,7 +169,7 @@ export default function Checkout() {
               </div>
 
               <div className="text-sm mt-2">
-                <h3>Order Note</h3>
+                <h3>Note</h3>
                 <textarea
                   name="note"
                   rows="4"
@@ -202,7 +185,7 @@ export default function Checkout() {
             <div className="checkout-output bg-gray-50 relative p-6">
               <div className="border-b mb-4 pb-4">
                 <h3 className="text-[17px] font-medium text-neutral">
-                  Discounts
+                  Discount
                 </h3>
                 <div>
                   <small className="text-neutral-content text-xs">
@@ -229,71 +212,7 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div className="border-b mb-4 pb-4">
-                <h3 className="font-medium text-neutral">Payment Method</h3>
-
-                <ul className="text-sm text-neutral-content flex flex-col gap-1 pl-2 mt-2">
-                  <li className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        id="cod"
-                        type="radio"
-                        name="payment_method"
-                        className="w-3 h-3 cursor-pointer"
-                        checked={paymentMethod === "cod" && true}
-                        onClick={() => setPaymentMethod("cod")}
-                      />
-                      <label htmlFor="cod" className="ms-2 cursor-pointer">
-                        Cash On Delivery
-                      </label>
-                    </div>
-
-                    <div>
-                      <img src="" alt="" className="w-4 h-4" />
-                    </div>
-                  </li>
-
-                  <li className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        id="ssl"
-                        type="radio"
-                        name="payment_method"
-                        className="w-3 h-3 cursor-pointer"
-                        checked={paymentMethod === "ssl" && true}
-                        onClick={() => setPaymentMethod("ssl")}
-                      />
-                      <label htmlFor="ssl" className="ms-2 cursor-pointer">
-                        SSL
-                      </label>
-                    </div>
-
-                    <div>
-                      <img src="" alt="" className="w-4 h-4" />
-                    </div>
-                  </li>
-
-                  <li className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        id="amar_pay"
-                        type="radio"
-                        name="payment_method"
-                        className="w-3 h-3 cursor-pointer"
-                        checked={paymentMethod === "amar_pay" && true}
-                        onClick={() => setPaymentMethod("amar_pay")}
-                      />
-                      <label htmlFor="amar_pay" className="ms-2 cursor-pointer">
-                        Amar pay
-                      </label>
-                    </div>
-
-                    <div>
-                      <img src="" alt="" className="w-4 h-4" />
-                    </div>
-                  </li>
-                </ul>
-              </div>
+              
               <div>
                 <h3 className="tetx-xl font-medium text-neutral">
                   Order Summary
@@ -306,32 +225,10 @@ export default function Checkout() {
                   </p>
                 </div>
 
-                <div className="flex justify-between items-center border-b py-1.5 text-sm">
-                  <h3>Shipping Area</h3>
-                  <div className="text-end">
-                    <select
-                      className="outline-none"
-                      required
-                      onChange={(e) => setShipping(parseInt(e.target.value))}
-                    >
-                      <option value="0">Select Shipping Area</option>
-                      <option value="70">Inside Dhaka</option>
-                      <option value="130">Outside Dhaka</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center border-b py-1.5 text-sm">
-                  <h3>Shipping Charge</h3>
-                  <div className="text-end">
-                    ৳<span>{shipping}.00</span>
-                  </div>
-                </div>
-
                 <div className="flex justify-between items-center border-b py-1.5 text-sm text-red-500">
                   <h3>Discount</h3>
                   <div className="text-end">
-                    - ৳<span>{discountTk}.00</span>
+                    - ৳<span>{discountTk ? discountTk : "00"}</span>
                   </div>
                 </div>
 
@@ -339,7 +236,7 @@ export default function Checkout() {
                 <div className="flex justify-between border-b py-2 font-medium text-lg">
                   <h3 className="text-title">Total</h3>
                   <p className="text-primary">
-                    ৳ <span>{grandTotal}.00 </span>
+                    ৳ <span>{grandTotal} </span>
                   </p>
                 </div>
               </div>

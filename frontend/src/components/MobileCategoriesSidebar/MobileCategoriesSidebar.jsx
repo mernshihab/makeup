@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
 import MobileCategoriesList from "./MobileCategoriesList";
 import SideCategory from "../Skeleton/SideCategory/SideCategory";

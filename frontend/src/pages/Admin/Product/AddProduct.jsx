@@ -49,11 +49,11 @@ export default function AddProduct() {
     const res = await addProduct(formData);
 
     if (res?.error) {
-      Swal.fire("", "Product add Fail, please try again", "error");
+      Swal.fire("", "Service add Fail, please try again", "error");
     }
 
     if (res?.data?.success) {
-      Swal.fire("", "Product add success", "success");
+      Swal.fire("", "Service add success", "success");
       setImages([]);
       setTitle("");
       setCategoryId("");
@@ -62,13 +62,13 @@ export default function AddProduct() {
       setDuration("");
       setFeatured(false);
       setDetails("");
-      navigate("/admin/product/all-products");
+      navigate("/admin/service/all-services");
     }
   };
 
   return (
     <div className="add_product  bg-base-100 rounded shadow p-4">
-      <h3 className="text-lg text-neutral font-medium mb-4">Add Product</h3>
+      <h3 className="text-lg text-neutral font-medium mb-4">Add Service</h3>
       <div className="text-neutral-content">
         <div className="mb-5 border rounded p-4">
           <p className="text-sm mb-2">Add Images (max 5 images select)</p>
@@ -117,7 +117,7 @@ export default function AddProduct() {
         <div className="form_group">
           <div className="border rounded p-4  flex flex-col gap-3 mb-5">
             <div>
-              <p className="text-sm">Product Title</p>
+              <p className="text-sm">Service Title</p>
               <input
                 type="text"
                 name="title"
@@ -184,7 +184,7 @@ export default function AddProduct() {
 
           {/*  Featured */}
           <div className="mt-6 border rounded p-4">
-            <p className="text-sm">Featured Product</p>
+            <p className="text-sm">Featured Service</p>
             <div className="mt-2">
               <div className="flex items-center gap-2">
                 <p>Status:</p>
@@ -222,7 +222,7 @@ export default function AddProduct() {
               disabled={isLoading && "disabled"}
               className="bg-primary text-base-100 px-10 py-2 rounded"
             >
-              {isLoading ? "Loading..." : "Add Product"}
+              {isLoading ? "Loading..." : "Add Service"}
             </button>
           </div>
         </div>

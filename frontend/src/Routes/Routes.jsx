@@ -4,6 +4,16 @@ import MainLayout from "../Layout/MainLayout";
 import Home from "../pages/Home/Home";
 import Spinner from "../components/Spinner/Spinner";
 import Offer from "../pages/Offer/Offer";
+import Services from "../pages/Services/Services";
+import OurBride from "../pages/OurBride/OurBride";
+import Gallery from "../pages/Admin/Gallery/Gallery";
+import AddGallery from "../pages/Admin/Gallery/AddGallery";
+import ContactMsgList from "../pages/Admin/ContactMsg/ContactMsgList";
+import ContactMsgDetail from "../pages/Admin/ContactMsg/ContactMsgDetail";
+import Academy from "../pages/Academy/Academy";
+import AddAcademy from "../pages/Admin/Academy/AddAcademy";
+import AcademyList from "../pages/Admin/Academy/AcademyList";
+import EditAcademy from "../pages/Admin/Academy/EditAcademy";
 
 // User Pages
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
@@ -25,13 +35,8 @@ const PrivateRoute = lazy(() => import("../PrivateRoute/PrivateRoute"));
 const EditProfile = lazy(() =>
   import("../pages/Account/EditePeofile/EditePeofile")
 );
-const Orders = lazy(() => import("../pages/Account/Orders/Orders"));
 const Profile = lazy(() => import("../pages/Account/Profile/Profile"));
-const Setting = lazy(() => import("../pages/Account/Setting/Setting"));
-const Wishlist = lazy(() => import("../pages/Account/Wishlist/Wishlist"));
-const OrderDetailsPage = lazy(() =>
-  import("../pages/Account/OrderDetails/OrderDetails")
-);
+
 const MyReviews = lazy(() => import("../pages/Account/Reviews/MyReviews"));
 
 // Admin Pages
@@ -209,12 +214,29 @@ export const routes = createBrowserRouter([
         element: <ProductDetails />,
       },
       {
+        path: "/academy",
+        element: <Academy />,
+      },
+      {
         path: "/about-us",
         element: <AboutUs />,
       },
       {
+        path: "/services/all",
+        element: <Services />,
+      },
+      {
+        path: "/services/:slug",
+        element: <Services />,
+      },
+
+      {
         path: "/offers",
         element: <Offer />,
+      },
+      {
+        path: "/our-brides",
+        element: <OurBride />,
       },
       {
         path: "/faq",
@@ -273,24 +295,8 @@ export const routes = createBrowserRouter([
         element: <EditProfile />,
       },
       {
-        path: "/account/wishlist",
-        element: <Wishlist />,
-      },
-      {
-        path: "/account/orders",
-        element: <Orders />,
-      },
-      {
-        path: "/account/orders/:id",
-        element: <OrderDetailsPage />,
-      },
-      {
         path: "/account/reviews",
         element: <MyReviews />,
-      },
-      {
-        path: "/account/setting",
-        element: <Setting />,
       },
     ],
   },
@@ -313,7 +319,7 @@ export const routes = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "/admin/category/categories",
+        path: "/admin/services",
         element: <AllCategories />,
       },
       {
@@ -361,16 +367,28 @@ export const routes = createBrowserRouter([
         element: <EditBrand />,
       },
       {
-        path: "/admin/product/all-products",
+        path: "/admin/service/all-services",
         element: <ProductList />,
       },
       {
-        path: "/admin/product/add-product",
+        path: "/admin/service/add-service",
         element: <AddProduct />,
       },
       {
-        path: "/admin/product/edit-product/:id",
+        path: "/admin/service/edit-service/:id",
         element: <EditProduct />,
+      },
+      {
+        path: "/admin/academy/all-academy",
+        element: <AcademyList />,
+      },
+      {
+        path: "/admin/academy/add-academy",
+        element: <AddAcademy />,
+      },
+      {
+        path: "/admin/academy/edit-academy/:id",
+        element: <EditAcademy />,
       },
       {
         path: "/admin/order/all-orders",
@@ -403,6 +421,16 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/reviews",
         element: <AllReview />,
+      },
+
+      //--------------Gallery
+      {
+        path: "/admin/gallery",
+        element: <Gallery />,
+      },
+      {
+        path: "/admin/gallery/add",
+        element: <AddGallery />,
       },
 
       //--------------Administrator
@@ -450,6 +478,16 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/ecommerce-setting/edit-banner/:id",
         element: <EditBanner />,
+      },
+
+      //---------Contact msg
+      {
+        path: "/admin/contact-msg",
+        element: <ContactMsgList />,
+      },
+      {
+        path: "/admin/contact-msg/:id",
+        element: <ContactMsgDetail />,
       },
 
       //---------Top Campaign Banner

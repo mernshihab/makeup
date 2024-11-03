@@ -69,9 +69,9 @@ export default function Profile() {
 
   return (
     <div>
-      <div className="bg-primary/20 rounded-md lg:grid grid-cols-3 gap-6">
+      <div className="bg-primary/20 rounded-md">
         <div className="bg-primary/70 rounded-md flex flex-col justify-center items-center py-4 text-base-100 font-medium">
-          <div className="update_image_wrap">
+          <div className="update_image_wrap ">
             <img
               src={
                 loggedUser?.data?.image === ""
@@ -159,17 +159,6 @@ export default function Profile() {
             </>
           </div>
           <h1 className="mt-2 text-xl">{loggedUser?.data?.name}</h1>
-        </div>
-
-        <div className="col-span-2 grid grid-cols-2 gap-4 items-center text-center py-5">
-          <div className="border-r border-neutral/50">
-            <h1 className="font-medium">Total Order</h1>
-            <p className="font-medium">0</p>
-          </div>
-          <div>
-            <h1 className="font-medium">Total Wishlist</h1>
-            <p className="font-medium">0</p>
-          </div>
         </div>
       </div>
 

@@ -73,37 +73,9 @@ export default function Dashboard() {
 
         <div className="flex justify-between items-center rounded-lg shadow p-4 bg-base-100">
           <div>
-            <p className="text-neutral font-dinMedium">Total Categories</p>
+            <p className="text-neutral font-dinMedium">Total Services</p>
             <h3 className="text-green-600 font-bold">
               {category?.data?.length}
-            </h3>
-          </div>
-
-          <div className="bg-primary text-base-100 w-11 h-11 rounded-lg flex justify-center items-center">
-            <MdOutlineCategory className="text-xl" />
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center rounded-lg shadow p-4 bg-base-100">
-          <div>
-            <p className="text-neutral font-dinMedium">Total SubCategories</p>
-            <h3 className="text-green-600 font-bold">
-              {subCategory?.data?.length}
-            </h3>
-          </div>
-
-          <div className="bg-primary text-base-100 w-11 h-11 rounded-lg flex justify-center items-center">
-            <MdOutlineCategory className="text-xl" />
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center rounded-lg shadow p-4 bg-base-100">
-          <div>
-            <p className="text-neutral font-dinMedium">
-              Total Sub Sub-Categories
-            </p>
-            <h3 className="text-green-600 font-bold">
-              {subSubCategory?.data?.length}
             </h3>
           </div>
 

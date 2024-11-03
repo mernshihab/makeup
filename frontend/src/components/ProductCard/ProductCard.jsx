@@ -2,9 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineWatchLater } from "react-icons/md";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa6";
+import { useGetContactQuery } from "../../Redux/contact/contactApi";
 
 export default function ProductCardCarousel({ products }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const { data: contactData } = useGetContactQuery();
+
+  const contact = contactData?.data[0];
 
   const itemsToShow =
     window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
@@ -74,9 +80,20 @@ export default function ProductCardCarousel({ products }) {
                       </>
                     )}
                   </p>
-                  <button className="w-full mt-2 py-2.5 text-white font-semibold bg-primary rounded-md hover:bg-[#922e63] duration-300">
-                    Add To Cart
-                  </button>
+                  <div className="w-full mt-5 grid gap-2 md:gap-4 md:grid-cols-2">
+                    <a
+                      href={`tel:${contact?.phone}`}
+                      className="py-1 md:py-1.5 text-center px-2 md:px-3 text-white  bg-black border border-black hover:text-black rounded-md hover:bg-transparent duration-300"
+                    >
+                      Call Now
+                    </a>
+                    <a
+                      href={`https://wa.me/${contact?.whatsapp}`}
+                      className="py-1 md:py-1.5 px-2 md:px-3 border border-green-600 text-green-600 font-semibold bg-transparent rounded-md hover:bg-green-600 hover:text-white duration-300"
+                    >
+                      <FaWhatsapp className="text-xl mx-auto" />
+                    </a>
+                  </div>
                 </div>
               </Link>
             </div>
@@ -84,9 +101,12 @@ export default function ProductCardCarousel({ products }) {
         </div>
       </div>
       <div className="flex items-center mt-6 space-x-4">
-        <button className="px-5 py-2 bg-white border border-primary hover:bg-primary hover:text-white duration-300 text-primary font-semibold rounded">
+        <Link
+          to="/services/all"
+          className="px-5 py-2 bg-white border border-primary hover:bg-primary hover:text-white duration-300 text-primary font-semibold rounded"
+        >
           View All Services
-        </button>
+        </Link>
         <button onClick={handlePrev} className="text-primary text-2xl">
           <FaChevronLeft />
         </button>

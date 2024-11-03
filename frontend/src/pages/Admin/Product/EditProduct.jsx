@@ -4,17 +4,12 @@ import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import {
-  useGetCategoriesQuery,
-  useGetCategoryQuery,
-} from "../../../Redux/category/categoryApi";
+import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
 import {
   useGetProductByIdQuery,
   useUpdateProductMutation,
 } from "../../../Redux/product/productApi";
-import { useGetSubCategoryQuery } from "../../../Redux/subCategory/subCategoryApi";
 import Spinner from "../../../components/Spinner/Spinner";
-import { useAllBrandsQuery } from "../../../Redux/brand/brandApi";
 
 export default function EditProduct() {
   const navigate = useNavigate();
@@ -24,17 +19,9 @@ export default function EditProduct() {
 
   const { data, isLoading, isError, error } = useGetProductByIdQuery(id);
   const product = data?.data;
-  const isVariants = product?.variants?.length > 0;
 
   const [categoryId, setCategoryId] = useState("");
-  const [subCategoryId, setSubCategoryId] = useState("");
   const { data: categories } = useGetCategoriesQuery();
-  const { data: category } = useGetCategoryQuery(categoryId);
-  const { data: subCategory } = useGetSubCategoryQuery(subCategoryId);
-  const { data: brands } = useAllBrandsQuery();
-
-  const subCategories = category?.data?.subCategories;
-  const subSubCategories = subCategory?.data?.subSubCategories;
 
   const [images, setImages] = useState([]);
   const [featured, setFeatured] = useState(false);
@@ -54,48 +41,19 @@ export default function EditProduct() {
   const [updateProduct, { isLoading: updateLoading }] =
     useUpdateProductMutation();
 
-  // Function to handle changes in input fields
-  const handleInputChange = (colorIndex, field, value) => {
-    setVariants((prevVariants) => {
-      const updatedVariants = [...prevVariants];
-
-      if (!updatedVariants[colorIndex]) {
-        updatedVariants[colorIndex] = [];
-      }
-
-      // Store all information (color, size, quantity, price) in each entry
-      updatedVariants[colorIndex] = {
-        ...updatedVariants[colorIndex],
-        colorName: product?.variants[colorIndex].color,
-        colorCode: product?.variants[colorIndex].colorCode,
-        size: product?.variants[colorIndex].size,
-        [field]: value,
-      };
-
-      return updatedVariants;
-    });
-  };
-
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
 
     const form = e.target;
     const title = form.title.value;
     const category = form.category.value;
-    const subCategory = form.sub_category.value;
-    const subSubCategory = form.sub_subCategory.value;
-    const brand = form.brand.value;
     const discount = form.discount.value;
     const sellingPrice = form.selling_price ? form.selling_price.value : "";
-    const purchasePrice = form.purchase_price ? form.purchase_price.value : "";
-    const quantity = form.quantity ? form.quantity.value : "";
+    const duration = form.duration ? form.duration.value : "";
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("category", category);
-    if (subCategory) formData.append("subCategory", subCategory);
-    if (subSubCategory) formData.append("subSubCategory", subSubCategory);
-    formData.append("brand", brand);
     formData.append("discount", discount);
     formData.append("featured", featured);
     formData.append(
@@ -104,8 +62,7 @@ export default function EditProduct() {
     );
 
     formData.append("sellingPrice", sellingPrice);
-    formData.append("purchasePrice", purchasePrice);
-    formData.append("quantity", quantity);
+    formData.append("duration", duration);
 
     if (images && images.length > 0) {
       images?.map((image) => {
@@ -116,16 +73,15 @@ export default function EditProduct() {
     formData.append("variants", JSON.stringify(variants));
 
     const res = await updateProduct({ id, formData });
-    // console.log(res);
 
     if (res?.error) {
-      Swal.fire("", "Product update Fail, please try again", "error");
+      Swal.fire("", "Service update Fail, please try again", "error");
     }
 
     if (res?.data?.success) {
-      Swal.fire("", "Product update success", "success");
+      Swal.fire("", "Service update success", "success");
       form.reset();
-      navigate("/admin/product/all-products");
+      navigate("/admin/service/all-services");
     }
   };
 
@@ -140,7 +96,7 @@ export default function EditProduct() {
   if (!isLoading && !isError) {
     content = (
       <>
-        <h3 className="text-lg text-neutral font-medium mb-4">Edit Product</h3>
+        <h3 className="text-lg text-neutral font-medium mb-4">Edit Service</h3>
         <form onSubmit={handleUpdateProduct} className="text-neutral-content">
           <div className="mb-5 border rounded p-4">
             <p className="text-sm mb-2">Add Images (max 5 images select)</p>
@@ -183,8 +139,9 @@ export default function EditProduct() {
 
                     {product?.images?.length &&
                       !images?.length &&
-                      product?.images?.map((img) => (
+                      product?.images?.map((img, i) => (
                         <img
+                          key={i}
                           src={`${
                             import.meta.env.VITE_BACKEND_URL
                           }/products/${img}`}
@@ -201,7 +158,7 @@ export default function EditProduct() {
           <div className="form_group">
             <div className="border rounded p-4  flex flex-col gap-3 mb-5">
               <div>
-                <p className="text-sm">Product Title</p>
+                <p className="text-sm">Service Title</p>
                 <input
                   type="text"
                   name="title"
@@ -229,63 +186,9 @@ export default function EditProduct() {
                     ))}
                   </select>
                 </div>
-
-                <div>
-                  <p className="text-sm">Sub Category</p>
-                  <select
-                    name="sub_category"
-                    onChange={(e) => setSubCategoryId(e.target.value)}
-                    defaultValue={product?.subCategory?._id}
-                  >
-                    <option value={product?.subCategory?._id}>
-                      {product?.subCategory?.name}
-                    </option>
-                    {subCategories?.length > 0 &&
-                      subCategories?.map((subCategory) => (
-                        <option key={subCategory?._id} value={subCategory?._id}>
-                          {subCategory?.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-
-                <div>
-                  <p className="text-sm">Sub SubCategory</p>
-                  <select
-                    name="sub_subCategory"
-                    defaultValue={product?.subSubCategory?._id}
-                  >
-                    <option value={product?.subSubCategory?._id}>
-                      {product?.subSubCategory?.name}
-                    </option>
-                    {subSubCategories?.length > 0 &&
-                      subSubCategories?.map((subSubCategory) => (
-                        <option
-                          key={subSubCategory?._id}
-                          value={subSubCategory?._id}
-                        >
-                          {subSubCategory?.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm">Brand</p>
-                  <select name="brand" defaultValue={product?.brand}>
-                    <option value="">Select Brand</option>
-                    <option value="No Brand">No Brand</option>
-                    {brands?.data?.length > 0 &&
-                      brands?.data?.map((brand) => (
-                        <option key={brand?._id} value={brand?.name}>
-                          {brand?.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-
                 <div>
                   <p className="text-sm">Discount %</p>
                   <input
@@ -296,163 +199,80 @@ export default function EditProduct() {
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Variants */}
-            <div className="mt-4 border rounded p-4">
-              <div className="mt-2 border rounded p-3">
-                {!isVariants && (
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <p className="text-sm">Selling Price</p>
-                      <input
-                        type="number"
-                        name="selling_price"
-                        required
-                        defaultValue={product?.sellingPrice}
-                      />
-                    </div>
-                    <div>
-                      <p className="text-sm">Purchase Price</p>
-                      <input
-                        type="number"
-                        name="purchase_price"
-                        required
-                        defaultValue={product?.purchasePrice}
-                      />
-                    </div>
-                    <div>
-                      <p className="text-sm">Quantity</p>
-                      <input
-                        type="number"
-                        name="quantity"
-                        required
-                        defaultValue={product?.quantity}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {isVariants && (
-                  <div className="border rounded p-4 mt-5">
-                    <p className="mb-2 text-neutral-content text-sm">
-                      Variants
-                    </p>
-                    <div className="relative overflow-x-auto">
-                      <table className="border_table">
-                        <thead>
-                          <tr>
-                            <th className="w-1/5">Color</th>
-                            <th className="w-1/5">Size</th>
-                            <th className="w-1/5">Quantity</th>
-                            <th className="w-1/5">Selling Price</th>
-                            <th className="w-1/5">Purchase Price</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {product?.variants &&
-                            product?.variants?.map((variant, colorIndex) => (
-                              <tr key={colorIndex}>
-                                <td>{variant?.color}</td>
-                                <td>{variant?.size}</td>
-                                <td>
-                                  <input
-                                    type="number"
-                                    required
-                                    defaultValue={variant?.quantity}
-                                    onChange={(e) =>
-                                      handleInputChange(
-                                        colorIndex,
-                                        "quantity",
-                                        e.target.value
-                                      )
-                                    }
-                                  />
-                                </td>
-                                <td>
-                                  <input
-                                    type="number"
-                                    required
-                                    defaultValue={variant?.sellingPrice}
-                                    onChange={(e) =>
-                                      handleInputChange(
-                                        colorIndex,
-                                        "sellingPrice",
-                                        e.target.value
-                                      )
-                                    }
-                                  />
-                                </td>
-                                <td>
-                                  <input
-                                    type="number"
-                                    required
-                                    defaultValue={variant?.purchasePrice}
-                                    onChange={(e) =>
-                                      handleInputChange(
-                                        colorIndex,
-                                        "purchasePrice",
-                                        e.target.value
-                                      )
-                                    }
-                                  />
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/*  Featured */}
-            <div className="mt-6 border rounded p-4">
-              <p className="text-sm">Featured Product</p>
-              <div className="mt-2">
-                <div className="flex items-center gap-2">
-                  <p>Status:</p>
-                  <label class="relative inline-flex items-center cursor-pointer">
-                    <input
-                      onChange={() => setFeatured(!featured)}
-                      type="checkbox"
-                      value={featured}
-                      class="sr-only peer"
-                      checked={product?.featured && featured}
-                    />
-                    <div class="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                  </label>
+          {/* Variants */}
+          <div className="mt-4 border rounded p-4">
+            <div className="mt-2 border rounded p-3">
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <p className="text-sm">Price</p>
+                  <input
+                    type="number"
+                    name="selling_price"
+                    required
+                    className="border py-1.5 px-2 rounded"
+                    defaultValue={product?.sellingPrice}
+                  />
+                </div>
+                <div>
+                  <p className="text-sm">Duration</p>
+                  <input
+                    type="number"
+                    name="duration"
+                    required
+                    className="border py-1.5 px-2 rounded"
+                    defaultValue={product?.duration}
+                  />
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Details */}
-            <div className="mt-6 add_product_details border rounded p-4">
-              <p className="text-sm">Description</p>
-
-              <div className="mt-2">
-                <JoditEditor
-                  ref={editor}
-                  value={
-                    details ||
-                    product?.description ||
-                    "Enter Product Description"
-                  }
-                  onBlur={(text) => setDetails(text)}
-                />
+          {/*  Featured */}
+          <div className="mt-6 border rounded p-4">
+            <p className="text-sm">Featured Service</p>
+            <div className="mt-2">
+              <div className="flex items-center gap-2">
+                <p>Status:</p>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    onChange={() => setFeatured(!featured)}
+                    type="checkbox"
+                    value={featured}
+                    className="sr-only peer"
+                    checked={product?.featured && featured}
+                  />
+                  <div className="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
               </div>
             </div>
+          </div>
 
-            {/* Buttons */}
-            <div className="mt-6 flex justify-end">
-              <button
-                type="submit"
-                disabled={updateLoading && "disabled"}
-                className="bg-primary text-base-100 px-10 py-2 rounded"
-              >
-                {updateLoading ? "Loading..." : "Update Product"}
-              </button>
+          {/* Details */}
+          <div className="mt-6 add_product_details border rounded p-4">
+            <p className="text-sm">Description</p>
+
+            <div className="mt-2">
+              <JoditEditor
+                ref={editor}
+                value={
+                  details || product?.description || "Enter Service Description"
+                }
+                onBlur={(text) => setDetails(text)}
+              />
             </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="mt-6 flex justify-end">
+            <button
+              type="submit"
+              disabled={updateLoading && "disabled"}
+              className="bg-primary text-base-100 px-10 py-2 rounded"
+            >
+              {updateLoading ? "Loading..." : "Update Service"}
+            </button>
           </div>
         </form>
       </>

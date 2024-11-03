@@ -1,7 +1,6 @@
 import { useState } from "react";
 import SearchBox from "./SearchBox";
 import { NavLink } from "react-router-dom";
-import CategoryLists from "../CategoryLists/CategoryLists";
 import MobileCategoriesSidebar from "../MobileCategoriesSidebar/MobileCategoriesSidebar";
 
 export default function MobileMenuSidebar({ mobileMenu, setMobileMenu }) {
@@ -39,10 +38,19 @@ export default function MobileMenuSidebar({ mobileMenu, setMobileMenu }) {
                 <NavLink to="/">Home</NavLink>
               </li>
               <li>
-                <NavLink to="/shops">Shop</NavLink>
+                <NavLink to="/about-us">About Us</NavLink>
               </li>
               <li>
-                <NavLink to="/about-us">About Us</NavLink>
+                <NavLink to="/services/all">Services</NavLink>
+              </li>
+              <li>
+                <NavLink to="/offers">Offers</NavLink>
+              </li>
+              <li>
+                <NavLink to="/our-brides">Our Brides</NavLink>
+              </li>
+              <li>
+                <NavLink to="/contact-us">Contact</NavLink>
               </li>
             </ul>
           )}

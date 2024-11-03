@@ -1,50 +1,7 @@
-import { useState } from "react";
-import { useGetAllProductsQuery } from "../../../Redux/product/productApi";
+import { useGetFeaturedProductsQuery } from "../../../Redux/product/productApi";
 import ProductCard from "../../ProductCard/ProductCard";
 
 export default function FeatureService() {
-  const sampleProducts = [
-    {
-      slug: "manicure-pedicure",
-      image: "/images/product1.jpg",
-      title: "Manicure and Pedicure",
-      description: "Spa Manicure and Pedicure With Pack",
-      duration: "90min",
-      sellingPrice: 675,
-      originalPrice: 750,
-      discount: 13,
-    },
-    {
-      slug: "facial-treatment",
-      image: "/images/product1.jpg",
-      title: "Facial Treatment",
-      description: "Relaxing Facial Treatment with Organic Products",
-      duration: "60min",
-      sellingPrice: 1200,
-      originalPrice: 1500,
-      discount: 20,
-    },
-    {
-      slug: "hair-spa",
-      image: "/images/product1.jpg",
-      title: "Hair Spa",
-      description: "Complete Hair Spa for Silky Smooth Hair",
-      duration: "45min",
-      sellingPrice: 850,
-      originalPrice: 1000,
-      discount: 15,
-    },
-    {
-      slug: "body-massage",
-      image: "/images/product1.jpg",
-      title: "Body Massage",
-      description: "Full Body Massage with Essential Oils",
-      duration: "90min",
-      sellingPrice: 1800,
-      originalPrice: 2000,
-      discount: 10,
-    },
-  ];
 
   // const query = {};
   // const [currentPage, setCurrentPage] = useState(1);
@@ -53,8 +10,12 @@ export default function FeatureService() {
   // query["page"] = currentPage;
   // query["limit"] = limit;
 
-  const { data, isLoading, isError, error } = useGetAllProductsQuery();
+  let query = {
+    limit: 5,
+  };
 
+  const { data } =
+    useGetFeaturedProductsQuery(query);
 
   const products = data?.data;
 

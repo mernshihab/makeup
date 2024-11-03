@@ -8,8 +8,6 @@ export default function CartItems({ carts }) {
           <tr>
             <th className="px-6 w-[60%]">Product</th>
             <th className="px-6 w-[10%]">Price</th>
-            <th className="px-6 w-[10%]">QUANTITY</th>
-            <th className="px-6 w-[10%]">Total</th>
             <th className="px-6 w-[10%]">Action</th>
           </tr>
         </thead>

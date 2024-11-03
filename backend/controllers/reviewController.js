@@ -295,6 +295,7 @@ exports.getAllReviews = async (req, res) => {
 
     const reviews = await Review.find(whereCondition)
       .populate("user")
+      .populate("product", "title slug images")
       .skip(skip)
       .limit(limit);
 

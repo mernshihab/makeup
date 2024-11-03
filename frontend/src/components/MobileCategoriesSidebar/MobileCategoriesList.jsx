@@ -26,7 +26,7 @@ export default function MobileCategoriesList({ category }) {
                 category?.icon
               }`}
               alt=""
-              className="w-6 h-6"
+              className="w-6 h-6 rounded"
             />
             {category?.name}
           </Link>

@@ -1,5 +1,5 @@
 import { useGetAllProductsQuery } from "../../../Redux/product/productApi";
-import ProductCard from "../../../components/ProductCard/ProductCard";
+import AllProductCard from "../../../components/ProductCard/AllProductCard";
 import ProductCards from "../../../components/Skeleton/ProductCards/ProductCards";
 
 export default function RelatedProducts({ category }) {
@@ -20,7 +20,7 @@ export default function RelatedProducts({ category }) {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <ProductCard key={product?._id} product={product} />
+      <AllProductCard key={product?._id} products={product} />
     ));
   }
 
@@ -29,11 +29,11 @@ export default function RelatedProducts({ category }) {
       <div className="bg-base-100 p-4 rounded-lg shadow-lg">
         <div className="flex justify-between sm:items-center border-b pb-2 border-primary">
           <h1 className="md:text-xl font-medium md:font-semibold text-neutral">
-            Related Products
+            You may also like
           </h1>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mt-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mt-3">
           {content}
         </div>
       </div>

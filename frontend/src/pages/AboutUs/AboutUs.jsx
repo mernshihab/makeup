@@ -34,7 +34,7 @@ export default function AboutUs() {
         <div className="grid md:grid-cols-2 gap-6 items-center">
           <div>
             <div className="w-max border-b-2 border-primary">
-              <h2 className="text-5xl font-bold">{about?.title}</h2>
+              <h2 className="text-2xl md:text-5xl font-bold">{about?.title}</h2>
             </div>
             <p className="text-neutral-content mt-2 text-lg">
               {about?.subTitle}
@@ -51,7 +51,7 @@ export default function AboutUs() {
                     <h3 className="text-2xl md:text-4xl font-semibold">
                       <CountUp
                         start={0}
-                        end={150000}
+                        end={10000}
                         duration={2.5}
                         separator=","
                         formattingFn={formatNumber}
@@ -67,7 +67,7 @@ export default function AboutUs() {
                     <h3 className="text-2xl md:text-4xl font-semibold">
                       <CountUp
                         start={0}
-                        end={200}
+                        end={50}
                         duration={2.5}
                         separator=","
                         formattingFn={formatNumber}

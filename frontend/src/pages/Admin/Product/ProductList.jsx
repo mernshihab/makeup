@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import {
   useDeleteProductMutation,
   useGetAllProductsQuery,
+  useUpdateProductMutation,
 } from "../../../Redux/product/productApi";
 import Spinner from "../../../components/Spinner/Spinner";
 import Pagination from "../../../components/Pagination/Pagination";
@@ -22,28 +23,36 @@ export default function ProductList() {
     ...query,
   });
 
+  const [updateProduct, { isLoading: updateLoading }] =
+    useUpdateProductMutation();
+
   const [
     deleteProduct,
     { isSuccess, isError: deleteIsError, error: deleteError },
   ] = useDeleteProductMutation();
 
   const handleDeleteProduct = async (id) => {
-    const isConfirm = window.confirm("Are you sure delete this product?");
+    const isConfirm = window.confirm("Are you sure you want to delete this product?");
     if (isConfirm) {
       await deleteProduct(id);
     }
   };
 
+  const handleToggleFeatured = async (product) => {
+    await updateProduct({
+      id: product._id,
+      formData: { featured: !product.featured },
+    });
+  };
+
   useEffect(() => {
     if (isSuccess) {
-      Swal.fire("", "Product Delete Success", "success");
+      Swal.fire("", "Product deleted successfully", "success");
     }
     if (deleteIsError) {
       Swal.fire(
         "",
-        deleteError?.message
-          ? deleteError?.message
-          : "something went worng, please try again",
+        deleteError?.message || "Something went wrong, please try again",
         "error"
       );
     }
@@ -51,13 +60,11 @@ export default function ProductList() {
 
   let content = null;
   if (isLoading) {
-    return (content = <Spinner />);
-  }
-  if (!isLoading && isError) {
+    content = <Spinner />;
+  } else if (isError) {
     content = <p>{error?.error}</p>;
-  }
-  if (!isLoading && !isError && data?.data?.length > 0) {
-    content = data?.data?.map((product) => (
+  } else if (data?.data?.length > 0) {
+    content = data.data.map((product) => (
       <tr key={product?._id}>
         <td>
           <div className="flex items-center gap-2">
@@ -75,49 +82,25 @@ export default function ProductList() {
         </td>
         <td>{product?.category?.name}</td>
         <td>
-          {product?.featured ? (
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                checked={product?.featured && product?.featured}
-                type="checkbox"
-                value={product?.featured}
-                className="sr-only peer"
-                disabled
-              />
-              <div className="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-            </label>
-          ) : (
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                checked={product?.featured && product?.featured}
-                type="checkbox"
-                value={product?.featured}
-                className="sr-only peer"
-                disabled
-              />
-              <div className="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-            </label>
-          )}
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={product?.featured}
+              onChange={() => handleToggleFeatured(product)}
+              className="sr-only peer"
+            />
+            <div className="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+          </label>
         </td>
         <td>
-          $
-          {product?.variants?.length
+          ${product?.variants?.length
             ? product?.variants[0]?.sellingPrice
             : product?.sellingPrice}
         </td>
         <td>
-          {product?.variants?.length > 0
-            ? product?.variants?.reduce(
-                (quantity, item) =>
-                  parseInt(quantity) + parseInt(item.quantity),
-                0
-              )
-            : product?.quantity}
-        </td>
-        <td>
           <div className="flex items-center gap-2">
             <Link
-              to={`/admin/product/edit-product/${product?._id}`}
+              to={`/admin/service/edit-service/${product?._id}`}
               className="hover:text-green-700 duration-300"
             >
               <BiSolidPencil />
@@ -138,10 +121,10 @@ export default function ProductList() {
     <div>
       <div className="flex justify-end mb-3">
         <Link
-          to="/admin/product/add-product"
+          to="/admin/service/add-service"
           className="text-sm bg-primary text-base-100 px-6 py-2 rounded"
         >
-          Add New Product
+          Add New Service
         </Link>
       </div>
 
@@ -150,11 +133,10 @@ export default function ProductList() {
           <table className="dashboard_table">
             <thead>
               <tr>
-                <th>Product name</th>
+                <th>Service name</th>
                 <th>Category</th>
                 <th>Featured</th>
                 <th>Price</th>
-                <th>Total Stock</th>
                 <th>Action</th>
               </tr>
             </thead>

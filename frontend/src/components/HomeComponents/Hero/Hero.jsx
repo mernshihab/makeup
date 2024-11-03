@@ -3,13 +3,17 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import { useRef } from "react";
+import { useGetBannersQuery } from "../../../Redux/banner/bannerApi";
 
 export default function Hero() {
+  const { data } = useGetBannersQuery();
+  const banners = data?.data;
   const swiperRef = useRef(null);
+
   return (
     <section>
       <Swiper
-        modules={[ A11y, Autoplay]}
+        modules={[A11y, Autoplay]}
         spaceBetween={50}
         slidesPerView={1}
         loop={true}
@@ -18,27 +22,15 @@ export default function Hero() {
           swiperRef.current = swiper;
         }}
       >
-        <SwiperSlide>
-          <img
-            className="h-[40vh] md:h-[60vh] lg:h-[80vh] w-full object-cover"
-            src="/images/banner/banner1.jpg"
-            alt=""
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            className="h-[40vh] md:h-[60vh] lg:h-[80vh] w-full object-cover"
-            src="/images/banner/banner2.jpg"
-            alt=""
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            className="h-[40vh] md:h-[60vh] lg:h-[80vh] w-full object-cover"
-            src="/images/banner/banner3.jpg"
-            alt=""
-          />
-        </SwiperSlide>
+        {banners?.map((banner) => (
+          <SwiperSlide key={banner._id}>
+            <img
+              className="zoom-out h-[40vh] md:h-[60vh] lg:h-[80vh] w-full object-cover"
+              src={`${import.meta.env.VITE_BACKEND_URL}/banner/${banner.image}`}
+              alt="Banner_Image"
+            />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </section>
   );

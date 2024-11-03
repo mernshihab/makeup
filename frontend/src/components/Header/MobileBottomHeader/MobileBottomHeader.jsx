@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FiHome } from "react-icons/fi";
 import { AiOutlineMenu } from "react-icons/ai";
-import { RiShoppingCartLine } from "react-icons/ri";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { CiShop } from "react-icons/ci";
 import MobileMenuSidebar from "../MobileMenuSidebar";
+import { GrGallery } from "react-icons/gr";
 
 export default function MobileBottomHeader() {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -38,24 +38,20 @@ export default function MobileBottomHeader() {
           </button>
 
           <NavLink
-            to="/cart"
-            className="flex flex-col justify-center items-center gap-1"
-          >
-            <div className="relative">
-              <RiShoppingCartLine className="text-lg" />
-              <div className="absolute flex items-center justify-center w-3.5 h-3.5 font-bold bg-primary text-base-100 rounded-full -top-1.5 -right-2">
-                <span className="mt-px text-xs">0</span>
-              </div>
-            </div>
-            <p className="text-xs">Cart</p>
-          </NavLink>
-
-          <NavLink
-            to="/shops"
+            to="/services/all"
             className="flex flex-col justify-center items-center gap-1"
           >
             <CiShop className="text-xl" />
-            <p className="text-xs">Shop</p>
+            <p className="text-xs">Services</p>
+          </NavLink>
+
+
+          <NavLink
+            to="/our-brides"
+            className="flex flex-col justify-center items-center gap-1"
+          >
+            <GrGallery className="text-xl" />
+            <p className="text-xs">Gallery</p>
           </NavLink>
 
           <NavLink
