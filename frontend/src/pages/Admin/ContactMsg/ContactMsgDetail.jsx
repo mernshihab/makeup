@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import Spinner from "../../../Components/Spinner/Spinner";
 import { useGetContactMsgByIdQuery } from "../../../Redux/contactMsg/contactMsgApi";
 
 export default function ContactMsgDetail() {
@@ -17,7 +16,7 @@ export default function ContactMsgDetail() {
   let content = null;
 
   if (isLoading) {
-    content = <Spinner />;
+    content = <p>Loading...</p>;
   } else if (isError) {
     content = (
       <p className="text-red-500">

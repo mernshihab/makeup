@@ -2,7 +2,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 import Swal from "sweetalert2";
 import { IoEye } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import Spinner from "../../../Components/Spinner/Spinner";
 import {
   useDeleteContactMsgMutation,
   useGetAllContactMsgsQuery,
@@ -40,7 +39,7 @@ export default function ContactMsgList() {
   };
 
   let content = null;
-  if (isLoading) return (content = <Spinner />);
+  if (isLoading) return (content = <p>Loading...</p>);
 
   if (isError) {
     content = <p className="mt-5 text-red-500">Failed to load messages</p>;
