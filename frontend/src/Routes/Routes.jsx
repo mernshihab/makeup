@@ -56,25 +56,6 @@ const EditCtg = lazy(() =>
   import("../pages/Admin/Category/Categories/EditCtg")
 );
 
-const AddSubCategory = lazy(() =>
-  import("../pages/Admin/Category/SubCategories/AddSubCategory")
-);
-const AllSubCategories = lazy(() =>
-  import("../pages/Admin/Category/SubCategories/AllSubCategories")
-);
-const EditSubCategory = lazy(() =>
-  import("../pages/Admin/Category/SubCategories/EditSubCategory")
-);
-
-const AddSubSubCategory = lazy(() =>
-  import("../pages/Admin/Category/SubSubCategory/AddSubSubCategory")
-);
-const AllSubSubCategory = lazy(() =>
-  import("../pages/Admin/Category/SubSubCategory/AllSubSubCategory")
-);
-const EditSubSubCategory = lazy(() =>
-  import("../pages/Admin/Category/SubSubCategory/EditSubSubCategory")
-);
 
 // Brand Management
 const AllBrands = lazy(() => import("../pages/Admin/Brand/AllBrands"));
@@ -196,14 +177,6 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/shops/:category",
-        element: <Shop />,
-      },
-      {
-        path: "/shops/:category/:subCategory",
-        element: <Shop />,
-      },
-      {
-        path: "/shops/:category/:subCategory/:subSubCategory",
         element: <Shop />,
       },
       {
@@ -335,30 +308,7 @@ export const routes = createBrowserRouter([
         path: "/admin/category/edit/:id",
         element: <EditCtg />,
       },
-      {
-        path: "/admin/category/sub-categories",
-        element: <AllSubCategories />,
-      },
-      {
-        path: "/admin/category/add-sub-category",
-        element: <AddSubCategory />,
-      },
-      {
-        path: "/admin/category/edit-sub-category/:id",
-        element: <EditSubCategory />,
-      },
-      {
-        path: "/admin/category/sub-sub-categories",
-        element: <AllSubSubCategory />,
-      },
-      {
-        path: "/admin/category/add-sub-sub-category",
-        element: <AddSubSubCategory />,
-      },
-      {
-        path: "/admin/category/edit-sub-sub-category/:id",
-        element: <EditSubSubCategory />,
-      },
+     
       {
         path: "/admin/brands",
         element: <AllBrands />,

@@ -3,9 +3,9 @@ import { FaPhone } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
-// import { useGetContactsQuery } from "../../../Redux/contact/contactApi";
-// import { useAddContactMsgMutation } from "../../../Redux/contactMsg/contactMsgApi";
 import Swal from "sweetalert2";
+import { useAddContactMsgMutation } from "../../Redux/contactMsg/contactMsgApi";
+import { useGetContactQuery } from "../../Redux/contact/contactApi";
 
 export default function Contactus() {
   useEffect(() => {
@@ -17,30 +17,30 @@ export default function Contactus() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  // const { data } = useGetContactsQuery();
+  const { data } = useGetContactQuery();
 
-  // const contactUs = data?.data;
+  const contactUs = data?.data[0];
 
-  // const [addContactMsg, { isLoading }] = useAddContactMsgMutation();
+  const [addContactMsg, { isLoading }] = useAddContactMsgMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newMessage = { name, phone, email, message };
 
-    // try {
-    //   const res = await addContactMsg(newMessage).unwrap();
-    //   if (res?.success) {
-    //     Swal.fire("", "Contact message added successfully", "success");
-    //     setName("");
-    //     setPhone("");
-    //     setEmail("");
-    //     setMessage("");
-    //   }
-    // } catch (error) {
-    //   Swal.fire("", "Failed to add message", "error");
-    //   console.log(error);
-    // }
+    try {
+      const res = await addContactMsg(newMessage).unwrap();
+      if (res?.success) {
+        Swal.fire("", "Contact message added successfully", "success");
+        setName("");
+        setPhone("");
+        setEmail("");
+        setMessage("");
+      }
+    } catch (error) {
+      Swal.fire("", "Failed to add message", "error");
+      console.log(error);
+    }
   };
 
   return (
@@ -61,36 +61,25 @@ export default function Contactus() {
                 <p>
                   <FaPhone />
                 </p>
-                {/* <p>{contactUs?.phone}</p> */}
-                <p>+8801873367534</p>
+                <p>{contactUs?.phone}</p>
               </div>
               <div className="flex items-center gap-1">
                 <p>
                   <IoLogoWhatsapp />
                 </p>
-                {/* <p>{contactUs?.wpLink}</p> */}
-                <p>+8801873367534</p>
-              </div>
-              <div className="flex items-center gap-1">
-                <p>
-                  <FaPhone />
-                </p>
-                {/* <p>{contactUs?.hotNumber}</p> */}
-                <p>4534</p>
+                <p>{contactUs?.whatsapp}</p>
               </div>
               <div className="flex items-center gap-1">
                 <p>
                   <MdEmail className="text-lg" />
                 </p>
-                {/* <p>{contactUs?.email}</p> */}
-                <p>monirsbeautylounge@gmail.com</p>
+                <p>{contactUs?.email}</p>
               </div>
               <div className="flex items-center gap-1">
                 <p>
                   <FaLocationDot className="text-lg" />
                 </p>
-                {/* <p>{contactUs?.address}</p> */}
-                <p>House-53, Block-A, Road-01, Niketon, Gulshan 1</p>
+                <p>{contactUs?.address}</p>
               </div>
             </div>
           </div>

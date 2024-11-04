@@ -42,7 +42,7 @@ export default function AddCategory() {
       Swal.fire("", "add success", "success");
       seticons([]);
       setName("");
-      navigate("/admin/category/categories");
+      navigate("/admin/services");
     }
     if (isError) {
       Swal.fire("", "Add category fail, please try again", "error");
