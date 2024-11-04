@@ -75,16 +75,11 @@ export default function AllCategories() {
 
   return (
     <div>
-      {data?.data?.length < 10 && (
-        <div className="flex justify-end mb-2">
-          <Link
-            to="/admin/category/add-category"
-            className="primary_btn text-sm"
-          >
-            Add New Category
-          </Link>
-        </div>
-      )}
+      <div className="flex justify-end mb-2">
+        <Link to="/admin/category/add-category" className="primary_btn text-sm">
+          Add New Category
+        </Link>
+      </div>
 
       <div className="relative overflow-x-auto shadow-lg">
         <table className="dashboard_table">
