@@ -7,6 +7,7 @@ const slugify = require("slugify");
 const fs = require("fs");
 const { calculatePagination } = require("../utils/calculatePagination");
 const { pick } = require("../utils/pick");
+const path = require("path");
 
 exports.addProduct = async (req, res) => {
   const images = req?.files?.map((file) => file.filename);
@@ -184,7 +185,7 @@ exports.deleteProductById = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   const id = req.params.id;
-  const images = req.files ? req.files.map((file) => file.filename) : null; // New images, if any
+  const newImages = req.files ? req.files.map((file) => file.filename) : null; // New images if provided
 
   try {
     const product = await Product.findById(id);
@@ -196,12 +197,10 @@ exports.updateProduct = async (req, res) => {
       });
     }
 
-    if (images && images.length > 0) {
+    // If new images are provided, delete the old images
+    if (newImages && newImages.length > 0) {
       product.images.forEach((imagePath) => {
-        const fullPath = path.join(
-          __dirname,
-          `../../uploads/products/${imagePath}`
-        );
+        const fullPath = path.join(__dirname, `../../uploads/products/${imagePath}`);
         fs.unlink(fullPath, (err) => {
           if (err) {
             console.error(`Error deleting file ${fullPath}:`, err);
@@ -210,9 +209,10 @@ exports.updateProduct = async (req, res) => {
       });
     }
 
+    // Update product with new or existing images
     const updatedProductData = {
       ...req.body,
-      images: images && images.length > 0 ? images : product.images,
+      images: newImages && newImages.length > 0 ? newImages : product.images,
     };
 
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -229,12 +229,10 @@ exports.updateProduct = async (req, res) => {
       data: updatedProduct,
     });
   } catch (error) {
-    if (images && images.length > 0) {
-      images.forEach((imagePath) => {
-        const fullPath = path.join(
-          __dirname,
-          `../../uploads/products/${imagePath}`
-        );
+    // If an error occurs and new images were uploaded, delete them to avoid orphan files
+    if (newImages && newImages.length > 0) {
+      newImages.forEach((imagePath) => {
+        const fullPath = path.join(__dirname, `/uploads/products/${imagePath}`);
         fs.unlink(fullPath, (err) => {
           if (err) {
             console.error(`Error deleting file ${fullPath}:`, err);

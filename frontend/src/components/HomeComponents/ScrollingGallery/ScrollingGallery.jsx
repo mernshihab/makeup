@@ -27,7 +27,7 @@ const ScrollingGallery = () => {
       const screenWidth = window.innerWidth;
 
       const speedMultiplier = screenWidth < 1240 ? 0.2 : 0.5;
-      const adjustedScreenWidth = screenWidth - (screenWidth < 1240 ? 50 : 600);
+      const adjustedScreenWidth = screenWidth - (screenWidth < 1240 ? -60 : 400);
 
       if (containerRef1.current) {
         containerRef1.current.style.transform = `translateX(${

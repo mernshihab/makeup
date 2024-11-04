@@ -56,17 +56,13 @@ export default function EditProduct() {
     formData.append("category", category);
     formData.append("discount", discount);
     formData.append("featured", featured);
-    formData.append(
-      "description",
-      details.length > 0 ? details : product?.description
-    );
-
+    formData.append("description", details || product?.description);
     formData.append("sellingPrice", sellingPrice);
     formData.append("duration", duration);
 
     if (images && images.length > 0) {
-      images?.map((image) => {
-        formData.append("images", image?.file);
+      images.forEach((image) => {
+        formData.append("images", image.file); // Ensure the images are added as file objects
       });
     }
 
@@ -75,11 +71,11 @@ export default function EditProduct() {
     const res = await updateProduct({ id, formData });
 
     if (res?.error) {
-      Swal.fire("", "Service update Fail, please try again", "error");
+      Swal.fire("", "Service update failed, please try again", "error");
     }
 
     if (res?.data?.success) {
-      Swal.fire("", "Service update success", "success");
+      Swal.fire("", "Service updated successfully", "success");
       form.reset();
       navigate("/admin/service/all-services");
     }

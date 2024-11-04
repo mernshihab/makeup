@@ -6,6 +6,7 @@ import { useGetGalleryQuery } from "../../Redux/gallery/galleryApi";
 import Spinner from "../../components/Spinner/Spinner";
 
 export default function OurBride() {
+  window.scrollTo(0, 0);
   const { data, isLoading } = useGetGalleryQuery();
 
   const gallery = data?.data?.result;
