@@ -32,6 +32,8 @@ export default function Reviews({ product }) {
     parseInt(data?.meta?.total) / parseInt(data?.meta?.limit)
   );
 
+  console.log("review Data",data?.data);
+
   // Delete review
   const handleReviewDelete = async (reviewId) => {
     const confirm = window.confirm(
@@ -106,7 +108,7 @@ export default function Reviews({ product }) {
                     user?.image === "" || user?.image === null
                       ? "/images/demo_user.jpg"
                       : `${import.meta.env.VITE_BACKEND_URL}/user/${
-                          user?.image
+                          review?.user?.image
                         }`
                   }
                   alt=""

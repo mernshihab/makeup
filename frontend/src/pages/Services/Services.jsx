@@ -38,9 +38,6 @@ export default function Services() {
 
   let content = null;
 
-  console.log("isLoading", Boolean(isLoading));
-  console.log("isFetching", Boolean(isFetching));
-
   if (!isLoading && isError) {
     content = <p>{error.error}</p>;
   }
