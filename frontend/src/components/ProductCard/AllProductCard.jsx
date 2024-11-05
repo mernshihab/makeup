@@ -12,7 +12,7 @@ export default function AllProductCard({ products, offerDiscount }) {
     <div className="pb-3 rounded-sm overflow-hidden">
       <Link to={`/product/${products?.slug}`}>
         <img
-          className="w-full h-52 sm:h-60 md:h-64 rounded-md object-cover"
+          className="w-full h-52 sm:h-60 md:h-64 rounded-md object-cover object-top"
           src={`${import.meta.env.VITE_BACKEND_URL}/products/${
             products?.images[0]
           }`}
