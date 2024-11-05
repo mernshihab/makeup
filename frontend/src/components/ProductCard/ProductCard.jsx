@@ -46,7 +46,7 @@ export default function ProductCardCarousel({ products }) {
                 to={`/product/${product?.slug}`}
               >
                 <img
-                  className="w-full h-64 rounded-md object-cover"
+                  className="w-full h-72 rounded-md object-cover object-top"
                   src={`${import.meta.env.VITE_BACKEND_URL}/products/${
                     product?.images[0]
                   }`}
