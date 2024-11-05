@@ -34,11 +34,7 @@ h2 {
   }
 }
 
-img {
-  object-fit: cover;
-  object-position: top;
-  aspect-ratio: 1 / 1; 
-}
+
 
 .active {
   color: var(--primary);
